@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import Input from "../components/Input";
+import Button from "../components/Button";
 import FileInput from "../components/FileInput";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Avatar from "../components/Avatar";
@@ -60,7 +61,15 @@ export default function Home() {
           text="Subir foto"
           color="primary"
           variant="contained"
+          multiple
           onChange={(event) => console.log(event.target.files)}
+        />
+      </Box>
+      <Box>
+        <Button
+          children="Iniciar sesión"
+          variant="contained"
+          color="primary"
         />
       </Box>
     </Box>

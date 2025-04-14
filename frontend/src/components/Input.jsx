@@ -14,6 +14,7 @@ const Input = ({
     <MuiInput
       sx={sx}
       id={id}
+      name={id}
       label={label}
       variant={variant}
       placeholder={placeholder}

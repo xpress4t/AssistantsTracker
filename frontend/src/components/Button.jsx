@@ -8,6 +8,7 @@ const Button = ({
   tabIndex,
   startIcon,
   color = "",
+  type,
   onClick
 }) => {
   return (
@@ -18,6 +19,7 @@ const Button = ({
       tabIndex={tabIndex}
       startIcon={startIcon}
       color={color}
+      type={type}
       onClick={onClick}
     >
       {children}

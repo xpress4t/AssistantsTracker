@@ -5,7 +5,12 @@
         $user = getUserByEmail($email);
 
         if($user == false || $user["password"] !== $password){
-            return false;
+            http_response_code(404);
+            echo json_encode([
+                "error" => "Usuario no encontrado o credenciales incorrectas",
+                "code" => 404
+            ]);
+            exit;
         }
 
         $user["password"] = null;

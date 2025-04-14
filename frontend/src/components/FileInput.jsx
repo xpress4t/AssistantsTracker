@@ -26,7 +26,6 @@ const FileInput = ({
       <Input
         type="file"
         onChange={onChange}
-        multiple
         sx={{ display: "none" }}
       />
     </Button>
