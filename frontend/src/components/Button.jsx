@@ -4,6 +4,7 @@ const Button = ({
   children,
   component,
   role,
+  size,
   variant = "",
   tabIndex,
   startIcon,
@@ -15,6 +16,7 @@ const Button = ({
     <MuiButton
       component={component}
       role={role}
+      size={size}
       variant={variant}
       tabIndex={tabIndex}
       startIcon={startIcon}
