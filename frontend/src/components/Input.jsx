@@ -9,6 +9,7 @@ const Input = ({
   sx,
   onChange,
   color,
+  defaultValue,
 }) => {
   return (
     <MuiInput
@@ -21,6 +22,7 @@ const Input = ({
       type={type}
       onChange={onChange}
       color={color}
+      defaultValue={defaultValue}
     />
   );
 };
