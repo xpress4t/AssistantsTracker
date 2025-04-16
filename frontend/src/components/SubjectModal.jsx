@@ -16,7 +16,7 @@ const style = {
   p: 4,
 };
 
-const SubjectModal = ({ subject, onClose, onSubmit }) => {
+const SubjectModal = ({ subject, onClose, onEdit }) => {
   return (
     <Modal
       open={!!subject} // es como un false x false
@@ -25,7 +25,7 @@ const SubjectModal = ({ subject, onClose, onSubmit }) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onEdit}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {subject?.id ? "Editar" : "Crear"} asignatura
           </Typography>
