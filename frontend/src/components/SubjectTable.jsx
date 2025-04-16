@@ -9,7 +9,7 @@ import {
   TableBody,
 } from "@mui/material";
 
-const SubjectTable = ({ subjects, onEdit }) => {
+const SubjectTable = ({ subjects, onEdit, onDelete }) => {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -38,7 +38,11 @@ const SubjectTable = ({ subjects, onEdit }) => {
                   <Button color="info" size="small" onClick={() => onEdit(row)}>
                     Edit
                   </Button>
-                  <Button color="error" size="small">
+                  <Button
+                    color="error"
+                    size="small"
+                    onClick={() => onDelete(row.id)}
+                  >
                     Delete
                   </Button>
                 </ButtonGroup>
