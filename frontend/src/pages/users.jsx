@@ -9,28 +9,76 @@ import api from "../services/index";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [userToEdit, setUserToEdit] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Open and close edit modal
-  const handleOpenEdit = (user) => setUserToEdit(user);
-  const handleCloseEdit = (user) => setUserToEdit(user);
+  const handleOpenEdit = (u) => setUserToEdit(u);
+  const handleCloseEdit = () => setUserToEdit(null);
 
   const handleEdit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const id = e.target.userId.value;
+    const name = e.target.userName.value;
+    const lastname = e.target.userLastname.value;
+    const email = e.target.userEmail.value;
+    const role = e.target.userRole.value;
 
-  }
+    const updatedUser = {
+      name,
+      lastname,
+      email,
+      role: parseInt(role),
+    };
 
-  // Open and close delete modal
+    if (id) {
+      await api.users.editUser(updatedUser);
+      setUsers((prev) =>
+        prev.map((u) => (u.id === parseInt(id) ? { ...u, ...updatedUser } : u))
+      );
+    } else {
+      await api.users.createUser(updatedUser);
+      setUsers((prev) => {
+        const lastItem = prev[prev.length - 1];
+        return [...prev, { id: lastItem.id + 1, ...updatedUser }];
+      });
+    }
+    handleCloseEdit();
+    setLoading(false);
+  };
+
+  // Open and close Delete modal
+  const handleOpenDelete = (id) => setUserToDelete(id);
+  const handleCloseDelete = () => setUserToDelete(null);
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    await api.users.deleteUser(id);
+    setUsers((prev) => prev.filter((u) => u.id !== id));
+    handleCloseDelete();
+    setLoading(false);
+  };
+
   const fetchUsers = async () => {
     setLoading(true);
-    const user = await api.users.getUsers();
-    setUsers(user);
+    const u = await api.users.getUsers();
+    setUsers(u);
+    setLoading(false);
+  };
+
+  const fetchRoles = async () => {
+    setLoading(true);
+    const r = await api.tools.getRoles();
+    setRoles(r);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchUsers();
+    fetchRoles();
   }, []);
 
   return (
@@ -41,12 +89,17 @@ const UsersPage = () => {
           variant="contained"
           color="success"
           size="small"
-          onClick={() => {}}
+          onClick={() => handleOpenEdit({ id: null, name: "" })}
         >
           Create
         </Button>
       </Box>
-      <UserTable users={users} />
+      <UserTable
+        users={users}
+        roles={roles}
+        onEdit={handleOpenEdit}
+        onDelete={handleOpenDelete}
+      />
       {loading && (
         <Box
           sx={{
@@ -59,8 +112,17 @@ const UsersPage = () => {
           <Loading />
         </Box>
       )}
-      <UserModal user={userToEdit} />
-      <UserModalDelete user={userToDelete} />
+      <UserModal
+        user={userToEdit}
+        roles={roles}
+        onClose={handleCloseEdit}
+        onEdit={handleEdit}
+      />
+      <UserModalDelete
+        user={userToDelete}
+        onClose={handleCloseDelete}
+        onDelete={handleDelete}
+      />
     </Box>
   );
 };
