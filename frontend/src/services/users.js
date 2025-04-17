@@ -8,7 +8,7 @@ export const getUsers = async () => {
           lastname: "Doe",
           photo: "",
           email: "john@gmail.com",
-          rol: "Administrador",
+          role: 1,
         },
         {
           id: 2,
@@ -16,10 +16,10 @@ export const getUsers = async () => {
           lastname: "Smith",
           photo: "",
           email: "jane@gmail.com",
-          rol: "Alumno"
+          role: 2,
         },
       ]);
-    }, 1000);
+    }, 200);
   });
 };
 
