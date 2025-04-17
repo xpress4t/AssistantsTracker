@@ -1,8 +1,11 @@
-import { Modal } from "@mui/material";
+import { InputLabel, Modal } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Input from "../components/Input";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const style = {
   position: "absolute",
@@ -16,7 +19,7 @@ const style = {
   p: 4,
 };
 
-const UserModal = ({ user, onClose, onEdit }) => {
+const UserModal = ({ user, roles, onClose, onEdit }) => {
   return (
     <Modal
       open={!!user} // es como un false x false
@@ -44,8 +47,43 @@ const UserModal = ({ user, onClose, onEdit }) => {
             type="text"
             id="userName"
             name="userName"
-            label="Nombre"
+            label="Nombres"
           />
+
+          <Input
+            defaultValue={user?.lastname}
+            sx={{ mt: 4, minWidth: "100%" }}
+            type="text"
+            id="userLastname"
+            name="userLastname"
+            label="Apellidos"
+          />
+
+          <Input
+            defaultValue={user?.email}
+            sx={{ mt: 4, minWidth: "100%" }}
+            type="email"
+            id="userEmail"
+            name="userEmail"
+            label="Email"
+          />
+          <Box sx={{ mt: 4, minWidth: "100%" }}>
+            <FormControl fullWidth>
+              <InputLabel id="userRole">Rol</InputLabel>
+              <Select
+                id="userRole"
+                name="userRole"
+                defaultValue={user?.role || ""}
+                label="Rol"
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
 
           <Box
             aria-label="outlined primary button group"
@@ -63,8 +101,9 @@ const UserModal = ({ user, onClose, onEdit }) => {
               color="error"
               variant="contained"
               size="medium"
+              onClick={onClose}
             >
-              Cancel
+              Close
             </Button>
           </Box>
         </form>
