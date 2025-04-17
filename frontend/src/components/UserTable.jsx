@@ -9,7 +9,7 @@ import {
   TableBody,
 } from "@mui/material";
 
-const UserTable = ({ users }) => {
+const UserTable = ({ users, roles, onEdit, onDelete }) => {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -28,7 +28,6 @@ const UserTable = ({ users }) => {
           {users.map((row) => (
             <TableRow
               key={row.name}
-
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -38,16 +37,22 @@ const UserTable = ({ users }) => {
               <TableCell align="center">{row.lastname}</TableCell>
               <TableCell align="center">{row.photo}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
-              <TableCell align="center">{row.rol}</TableCell>
+              <TableCell align="center">
+                {roles.find((role) => role.id === row.role)?.name}
+              </TableCell>
               <TableCell align="right">
                 <ButtonGroup
                   variant="contained"
                   aria-label="Basic button group"
                 >
-                  <Button color="info" size="small">
+                  <Button color="info" size="small" onClick={() => onEdit(row)}>
                     Edit
                   </Button>
-                  <Button color="error" size="small">
+                  <Button
+                    color="error"
+                    size="small"
+                    onClick={() => onDelete(row.id)}
+                  >
                     Delete
                   </Button>
                 </ButtonGroup>
