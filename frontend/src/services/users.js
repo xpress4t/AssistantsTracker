@@ -18,6 +18,22 @@ export const getUsers = async () => {
           email: "jane@gmail.com",
           role: 2,
         },
+        {
+          id: 3,
+          name: "Pepe",
+          lastname: "Smith",
+          photo: "",
+          email: "Pepe@gmail.com",
+          role: 2,
+        },
+        {
+          id: 4,
+          name: "Gregory",
+          lastname: "Smith",
+          photo: "",
+          email: "Gregory@gmail.com",
+          role: 2,
+        },
       ]);
     }, 200);
   });
@@ -27,7 +43,7 @@ export const createUser = async (user) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(user);
-    }, 1000);
+    }, 200);
   });
 };
 
@@ -35,7 +51,7 @@ export const editUser = async (user) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(user);
-    }, 1000);
+    }, 200);
   });
 };
 
@@ -43,6 +59,6 @@ export const deleteUser = async (id) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, 200);
   });
 };
