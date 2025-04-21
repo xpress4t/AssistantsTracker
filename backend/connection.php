@@ -18,7 +18,7 @@ function getUserByEmail($email)
     // Para evitar caracteres raros en al consulta
     $email = mysqli_real_escape_string($connectionBBDD, $email);
     // Realizo la consulta
-    $query = "SELECT id, name, lastname, password, photo, email FROM users WHERE email = '$email'";
+    $query = "SELECT userId, name, lastname, password, email, password FROM users WHERE email = '$email'";
     // Ejecuto la consulta
     $resultado = mysqli_query($connectionBBDD, $query);
 
@@ -40,7 +40,7 @@ function getStudents()
     }
 
     // Realizo la consulta
-    $query = "SELECT id, name, lastname, photo FROM users";
+    $query = "SELECT userId, name, lastname, photo FROM users";
     // Ejecuto la consulta
     $resultado = mysqli_query($connectionBBDD, $query);
 
