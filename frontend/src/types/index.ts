@@ -20,7 +20,7 @@ interface Subject {
 }
 
 interface SubjectWithTeacher extends Subject {
-    courseId: number;
+    subjectId: number;
     teacherId: number;
 }
 

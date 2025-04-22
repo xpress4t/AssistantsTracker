@@ -1,5 +1,5 @@
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "../components/Button";
+import Box from "@mui/material/Box";
 import {
   TableContainer,
   Table,
@@ -9,7 +9,7 @@ import {
   TableBody,
 } from "@mui/material";
 
-const CourseTable = ({ courses, onEdit, onDelete }) => {
+const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -32,23 +32,30 @@ const CourseTable = ({ courses, onEdit, onDelete }) => {
               </TableCell>
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.studentIds.length}</TableCell>
-              <TableCell align="center">{row.subjectIds.length}</TableCell>
+              <TableCell align="center">{row.subjects.length}</TableCell>
               <TableCell align="right">
-                <ButtonGroup
-                  variant="contained"
-                  aria-label="Basic button group"
-                >
-                  <Button color="info" size="small" onClick={() => onEdit(row)}>
+                <Box sx={{ gap: 1, display: "flex", justifyContent: "end" }}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="small"
+                    onClick={() => onEdit(row)}
+                  >
                     Edit
                   </Button>
+                  <Button variant="contained" color="info" size="small" onClick={() => onAssign(row)}>
+                    Asignar profesor
+                  </Button>
                   <Button
+                    variant="contained"
                     color="error"
                     size="small"
                     onClick={() => onDelete(row.id)}
                   >
                     Delete
                   </Button>
-                </ButtonGroup>
+                </Box>
+                {/*listado de profe y listado de asignaturas */}
               </TableCell>
             </TableRow>
           ))}

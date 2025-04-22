@@ -5,15 +5,18 @@ import Loading from "../components/Loading";
 import CourseTable from "../components/CourseTable";
 import CourseModal from "../components/CourseModal";
 import CourseModalDelete from "../components/CourseModalDelete";
+import CourseTeacherModal from "@/components/CourseTeacherModal";
 import api from "../services/index";
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [courseToEdit, setCourseToEdit] = useState(null);
   const [courseToDelete, setCourseToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [courseToAssign, setTeacherModalOpen] = useState(null);
 
   const handleOpenEdit = (c) => setCourseToEdit(c);
   const handleCloseEdit = () => setCourseToEdit(null);
@@ -26,13 +29,27 @@ const CoursesPage = () => {
     const studentIds = e.target.courseStudentIds?.value;
     const subjectIds = e.target.courseSubjectIds?.value;
 
+    const course = courses.find((c) => c.id === Number(id));
+
     const updatedCourse = {
       name,
       studentIds: studentIds ? studentIds.split(",").map(Number) : [],
-      subjectIds: subjectIds ? subjectIds.split(",").map(Number) : [],
+      subjects: subjectIds
+        ? subjectIds.split(",").map((value) => {
+            const subjectId = Number(value);
+            const existingSubject = course?.subjects.find(
+              (s) => s.subjectId === subjectId
+            );
+
+            return {
+              subjectId,
+              teacherId: existingSubject?.teacherId,
+            };
+          })
+        : [],
     };
 
-    if (id) {
+    if (!!course) {
       await api.courses.editCourse(updatedCourse);
       setCourses((prev) =>
         prev.map((c) =>
@@ -50,6 +67,21 @@ const CoursesPage = () => {
     setLoading(false);
   };
 
+  const handleOpenTeacherModal = (course) => setTeacherModalOpen(course);
+  const handleCloseTeacherModal = () => setTeacherModalOpen(null);
+
+  const handleSaveTeachers = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+
+    handleCloseEdit();
+    setLoading(false);
+  };
+ 
+  /**
+   * Delete courses
+   */
   const handleOpenDelete = (id) => setCourseToDelete(id);
   const handleCloseDelete = () => setCourseToDelete(null);
 
@@ -70,8 +102,8 @@ const CoursesPage = () => {
 
   const fetchStudents = async () => {
     setLoading(true);
-    const users = await api.users.getUsers();
-    setStudents(users.filter((user) => user.role === 2));
+    const users = await api.users.getUsers(3);
+    setStudents(users);
     setLoading(false);
   };
 
@@ -82,10 +114,18 @@ const CoursesPage = () => {
     setLoading(false);
   };
 
+  const fetchTeachers = async () => {
+    setLoading(true);
+    const users = await api.users.getUsers(2);
+    setTeachers(users);
+    setLoading(false);
+  };
+
   useEffect(() => {
     fetchCourses();
     fetchStudents();
     fetchSubjects();
+    fetchTeachers();
   }, []);
 
   return (
@@ -96,7 +136,9 @@ const CoursesPage = () => {
           variant="contained"
           color="success"
           size="small"
-          onClick={() => handleOpenEdit({ id: null, name: "" })}
+          onClick={() =>
+            handleOpenEdit({ id: null, name: "", studentIds: [], subjects: [] })
+          }
         >
           Create
         </Button>
@@ -107,7 +149,9 @@ const CoursesPage = () => {
         subjects={subjects}
         onEdit={handleOpenEdit}
         onDelete={handleOpenDelete}
+        onAssign={handleOpenTeacherModal}
       />
+
       {loading && (
         <Box
           sx={{
@@ -120,17 +164,27 @@ const CoursesPage = () => {
           <Loading />
         </Box>
       )}
+
       <CourseModal
         course={courseToEdit}
         students={students}
         subjects={subjects}
-        onClose={handleCloseEdit}
         onEdit={handleEdit}
+        onClose={handleCloseEdit}
       />
+
+      <CourseTeacherModal
+        course={courseToAssign}
+        teachers={teachers}
+        subjects={subjects}
+        onEdit={handleSaveTeachers}
+        onClose={handleCloseTeacherModal}
+      />
+
       <CourseModalDelete
         course={courseToDelete}
-        onClose={handleCloseDelete}
         onDelete={handleDelete}
+        onClose={handleCloseDelete}
       />
     </Box>
   );

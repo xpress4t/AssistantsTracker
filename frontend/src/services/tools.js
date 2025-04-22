@@ -8,11 +8,11 @@ export const getRoles = async () => {
         },
         {
           id: 2,
-          name: "Alumno",
+          name: "Profesor",
         },
         {
           id: 3,
-          name: "Profesor",
+          name: "Alumno",
         },
       ]);
     }, 200);

@@ -8,7 +8,6 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Chip from "@mui/material/Chip";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import courses from "../services/courses";
 
 const style = {
   position: "absolute",
@@ -23,6 +22,8 @@ const style = {
 };
 
 const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
+  const subjectIds = course?.subjects.map((sub) => sub.subjectId) || [];
+
   return (
     <Modal
       open={!!course}
@@ -52,7 +53,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
             label="Nombre"
           />
           <Box sx={{ mt: 4, minWidth: "100%" }}>
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl sx={{ width: 300 }}>
               <InputLabel>Estudiantes</InputLabel>
               <Select
                 id="courseStudentIds"
@@ -92,13 +93,13 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
 
           {/* Asignaturas */}
           <Box sx={{ mt: 4, minWidth: "100%" }}>
-            <FormControl sx={{ m: 1, width: 300 }}>
+            <FormControl sx={{ width: 300 }}>
               <InputLabel>Asignaturas</InputLabel>
               <Select
-                id="demo-multiple-chip"
+                id="courseSubjectIds"
                 name="courseSubjectIds"
                 multiple
-                defaultValue={course?.subjectIds || []}
+                defaultValue={subjectIds || []}
                 input={
                   <OutlinedInput
                     id="select-multiple-chip"

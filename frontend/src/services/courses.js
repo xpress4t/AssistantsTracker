@@ -5,14 +5,14 @@ export const getCourses = async () => {
         {
           id: 1,
           name: "101",
-          studentIds: [2],
-          subjectIds: [],
+          studentIds: [4],
+          subjects: [{ subjectId: 1, teacherId: 2 }],
         },
         {
           id: 2,
           name: "102",
-          studentIds: [3, 4],
-          subjectIds: [],
+          studentIds: [4, 5],
+          subjects: [{ subjectId: 2, teacherId: 3 }],
         },
       ]);
     }, 200);
