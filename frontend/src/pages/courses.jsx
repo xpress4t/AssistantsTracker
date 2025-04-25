@@ -73,12 +73,31 @@ const CoursesPage = () => {
   const handleSaveTeachers = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
 
-    handleCloseEdit();
+    const id = e.target.courseId.value;
+    const updatedSubjects = Array.from(e.target.elements)
+      .filter((elem) => elem.tagName === "INPUT" && elem.id !== "courseId")
+      .map((elem) => ({
+        subjectId: Number(elem.id),
+        teacherId: Number(elem.value),
+      }));
+
+    console.log(updatedSubjects);
+
+    setCourses((previous) =>
+      previous.map((course) =>
+        course.id === parseInt(id)
+          ? { ...course, subjects: updatedSubjects }
+          : course
+      )
+    );
+
+    // Actualizar el curso que estamos editando, para que course.subjects sea igual a nuestro objeto updatedSubjects
+
+    handleCloseTeacherModal();
     setLoading(false);
   };
- 
+
   /**
    * Delete courses
    */
@@ -109,8 +128,8 @@ const CoursesPage = () => {
 
   const fetchSubjects = async () => {
     setLoading(true);
-    const subjects = await api.subjects.getSubjects();
-    setSubjects(subjects);
+    const s = await api.subjects.getSubjects();
+    setSubjects(s);
     setLoading(false);
   };
 
