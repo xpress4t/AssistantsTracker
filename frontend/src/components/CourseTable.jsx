@@ -19,6 +19,7 @@ const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
             <TableCell align="center">Aula</TableCell>
             <TableCell align="center">Número de Estudiantes</TableCell>
             <TableCell align="center">Número de Asignaturas</TableCell>
+            <TableCell align="right">Acciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -43,7 +44,12 @@ const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
                   >
                     Edit
                   </Button>
-                  <Button variant="contained" color="info" size="small" onClick={() => onAssign(row)}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="small"
+                    onClick={() => onAssign(row)}
+                  >
                     Asignar profesor
                   </Button>
                   <Button
