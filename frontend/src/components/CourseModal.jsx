@@ -44,6 +44,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
             type="hidden"
             sx={{ display: "none" }}
           />
+          
           <Input
             defaultValue={course?.name}
             sx={{ mt: 4, minWidth: "100%" }}
@@ -110,7 +111,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
                   return (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selected.map((id) => {
-                        const subject = subjects.find((user) => user.id === id);
+                        const subject = subjects.find((s) => s.id === id);
                         return <Chip key={id} label={`${subject?.name}`} />;
                       })}
                     </Box>
