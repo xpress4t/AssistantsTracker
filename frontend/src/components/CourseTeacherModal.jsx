@@ -1,10 +1,15 @@
-import { Chip, InputLabel, Modal, OutlinedInput } from "@mui/material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import React, { useState } from "react";
+import {
+  Modal,
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import Input from "../components/Input";
+import Grid from "@mui/material/Grid2";
+import React from "react";
 
 const style = {
   position: "absolute",
@@ -25,22 +30,6 @@ const CourseTeacherModal = ({
   onEdit,
   onClose,
 }) => {
-  const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-  const [teacherSubjects, setTeacherSubjects] = useState([]);
-
-  const handleTeacherChange = (e) => {
-    const teacherId = e.target.value;
-    setSelectedTeacherId(teacherId);
-
-    const teacher = teachers.find((t) => t.id === teacherId);
-    setTeacherSubjects(teacher?.subjects || []); // si no hay me devuelve un array vacio
-  };
-
-  const handleSubjectChange = (e) => {
-    const selectedSubjects = e.target.value;
-    setTeacherSubjects(selectedSubjects);
-  };
-
   return (
     <Modal
       open={!!course}
@@ -50,64 +39,57 @@ const CourseTeacherModal = ({
     >
       <Box sx={style}>
         <form onSubmit={onEdit}>
+          <Input
+            defaultValue={course?.id}
+            id={"courseId"}
+            name={"courseId"}
+            type="hidden"
+            sx={{ display: "none" }}
+          />
 
-          {selectedTeacherId && (
-            <Box sx={{ mt: 4, minWidth: "100%" }}>
-              <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel>Asignaturas</InputLabel>
-                <Select
-                  id="teacherSubjects"
-                  name="teacherSubjects"
-                  multiple
-                  value={teacherSubjects}
-                  onChange={handleSubjectChange}
-                  input={
-                    <OutlinedInput
-                      id="select-multiple-chip"
-                      label="Asignaturas"
-                    />
-                  }
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                      {selected.map((id) => {
-                        const subject = subjects.find(
-                          (subject) => subject.id === id
-                        );
-                        return <Chip key={id} label={`${subject?.name}`} />;
-                      })}
-                    </Box>
-                  )}
-                >
-                  {subjects.map((subject) => (
-                    <MenuItem key={subject.id} value={subject.id}>
-                      {subject.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          )}
+          <Grid container spacing={2}>
+            {course?.subjects.map((courseSubject) => {
+              const subject = subjects.find(
+                (s) => s.id === courseSubject.subjectId
+              );
+              const labelId = `subject-${courseSubject.subjectId}-teacher`;
 
-          <Box sx={{ mt: 4, minWidth: "100%" }}>
-            <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel>Profesores</InputLabel>
-              <Select
-                id="courseTeacherIds"
-                name="courseTeacherIds"
-                value={selectedTeacherId || ""}
-                onChange={handleTeacherChange}
-                input={
-                  <OutlinedInput id="select-multiple-chip" label="Profesores" />
-                }
-              >
-                {teachers.map((teacher) => (
-                  <MenuItem key={teacher.id} value={teacher.id}>
-                    {teacher.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+              return (
+                <React.Fragment key={subject.name}>
+                  <Grid
+                    size={{ xs: 12, sm: 6 }}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <InputLabel sx={{ color: "black" }}>
+                      {subject?.name}
+                    </InputLabel>
+                  </Grid>
+
+                  <Grid size={{ xs: 12, sm: 6 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id={labelId}>Profesor</InputLabel>
+                      <Select
+                        defaultValue={courseSubject.teacherId || ""}
+                        inputProps={{ id: courseSubject.subjectId }}
+                        labelId={labelId}
+                        name={labelId}
+                        label="Profesor"
+                      >
+                        {teachers.map((teacher) => {
+                          return (
+                            <MenuItem key={teacher.id} value={teacher.id}>
+                              {teacher.name}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </React.Fragment>
+              );
+            })}
+          </Grid>
+
           <Box
             aria-label="outlined primary button group"
             sx={{ mt: 4, display: "flex", justifyContent: "space-evenly" }}
