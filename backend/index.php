@@ -1,5 +1,5 @@
 <?php
-require_once("connection.php");
+require_once("services/index.php");
 
 $result = getUserByEmail("emmanuel@gmail.com");
 
