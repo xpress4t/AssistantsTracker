@@ -1,6 +1,6 @@
 <?php
 require("../utilities/cors.php");
-require_once("../utilities/loginUser.php");
+require_once("../services/index.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
@@ -13,16 +13,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         // Decodifica el JSON
         $data = json_decode($input, true); // true lo convierte en array asociativo
-        
+
         // Accede a los valores
         if (!isset($data['email']) || !isset($data['password'])) {
             echo 'null';
             exit;
         }
-        
+
         $email = $data['email'] ?? null;
         $password = $data['password'] ?? null;
-        
+
         userAuthenticate($email, $password);
 
         echo json_encode($_SESSION['user']);
