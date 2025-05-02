@@ -1,18 +1,14 @@
+import { API_URL, subjects } from "./constants";
+
 export const getSubjects = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, name: "Matemáticas" },
-        { id: 2, name: "Física" },
-        { id: 3, name: "Quimica" },
-        { id: 4, name: "Educacion Fisica" },
-        { id: 5, name: "Inglés" },
-        { id: 6, name: "FOL" },
-        { id: 7, name: "Marcas" },
-        { id: 8, name: "Lengua" },
-      ]);
-    }, 200);
+  const url = `${API_URL}${subjects}`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+  const data = await res.json();
+  return data;
 };
 
 export const createSubject = async (subject) => {

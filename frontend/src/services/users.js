@@ -1,52 +1,15 @@
+import { API_URL, users } from "./constants";
+
 export const getUsers = async (roleId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(
-        [
-          {
-            id: 1,
-            name: "John",
-            lastname: "Doe",
-            photo: "",
-            email: "john@gmail.com",
-            role: 1,
-          },
-          {
-            id: 2,
-            name: "Jane",
-            lastname: "Smith",
-            photo: "",
-            email: "jane@gmail.com",
-            role: 2,
-          },
-          {
-            id: 3,
-            name: "Pepe",
-            lastname: "Smith",
-            photo: "",
-            email: "Pepe@gmail.com",
-            role: 2,
-          },
-          {
-            id: 4,
-            name: "Gregory",
-            lastname: "Smith",
-            photo: "",
-            email: "Gregory@gmail.com",
-            role: 3,
-          },
-          {
-            id: 5,
-            name: "Pablo",
-            lastname: "Escobar",
-            photo: "",
-            email: "pablo@gmail.com",
-            role: 3,
-          },
-        ].filter((u) => !roleId || u.role === roleId)
-      );
-    }, 200);
+  const url = `${API_URL}${users}`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+  const data = await res.json();
+
+  return data;
 };
 
 export const createUser = async (user) => {

@@ -1,22 +1,14 @@
+import { API_URL, courses } from "./constants";
+
 export const getCourses = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: 1,
-          name: "101",
-          studentIds: [4],
-          subjects: [{ subjectId: 1, teacherId: 2 }],
-        },
-        {
-          id: 2,
-          name: "102",
-          studentIds: [4, 5],
-          subjects: [{ subjectId: 2, teacherId: 3 }],
-        },
-      ]);
-    }, 200);
+  const url = `${API_URL}${courses}`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+  const data = await res.json();
+  return data;
 };
 
 export const createCourse = async (course) => {
