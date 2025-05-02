@@ -16,7 +16,8 @@ const StudentManagement = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch("http://localhost/backend/students/", {
+        // cambiar endpoint al final por users
+        const response = await fetch("http://localhost/backend/users/", {
           headers: {
             "Content-Type": "application/json",
           },
