@@ -14,6 +14,7 @@ const CoursesPage = () => {
   const [subjects, setSubjects] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [courseToEdit, setCourseToEdit] = useState(null);
+  const [editError, setEditError] = useState(null);
   const [courseToDelete, setCourseToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
   const [courseToAssign, setTeacherModalOpen] = useState(null);
@@ -21,6 +22,7 @@ const CoursesPage = () => {
   const handleOpenEdit = (c) => setCourseToEdit(c);
   const handleCloseEdit = () => setCourseToEdit(null);
 
+  /* Edit courses */
   const handleEdit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -57,11 +59,14 @@ const CoursesPage = () => {
         )
       );
     } else {
-      await api.courses.createCourse(updatedCourse);
-      setCourses((prev) => {
-        const lastItem = prev[prev.length - 1];
-        return [...prev, { id: lastItem.id + 1, ...updatedCourse }];
-      });
+      try {
+        const c = await api.courses.createCourse(updatedCourse);
+        setCourses(c);
+      } catch (e) {
+        setLoading(false);
+        setEditError(e);
+        return;
+      }
     }
     handleCloseEdit();
     setLoading(false);
@@ -98,9 +103,7 @@ const CoursesPage = () => {
     setLoading(false);
   };
 
-  /**
-   * Delete courses
-   */
+  /* Delete courses */
   const handleOpenDelete = (id) => setCourseToDelete(id);
   const handleCloseDelete = () => setCourseToDelete(null);
 
@@ -186,6 +189,7 @@ const CoursesPage = () => {
 
       <CourseModal
         course={courseToEdit}
+        error={editError}
         students={students}
         subjects={subjects}
         onEdit={handleEdit}

@@ -41,3 +41,23 @@ function getCourses()
 
     return $courses;
 }
+
+function createCourse($course)
+{
+    global $databaseHost, $databaseUser, $databasePassword, $databaseName;
+    $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
+
+    if (!$connectionBBDD) {
+        die("Conexión fallida: " . mysqli_connect_error());
+    }
+
+    $name = mysqli_real_escape_string($connectionBBDD, $course['name']);
+    $coursesQuery = "INSERT INTO classrooms (name) VALUES ('" . $name . "')";
+    mysqli_query($connectionBBDD, $coursesQuery);
+
+    return getCourses();
+}
+
+function deleteCourse() {
+    
+}

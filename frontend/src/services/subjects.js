@@ -12,25 +12,49 @@ export const getSubjects = async () => {
 };
 
 export const createSubject = async (subject) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(subject);
-    }, 200);
+  const url = `${API_URL}${subjects}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ subject }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
 };
 
-export const editSubject = async (subject) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(subject);
-    }, 200);
+export const editSubject = async (subjectId, subjectName) => {
+  const url = `${API_URL}${subjects}`;
+  const res = await fetch(url, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ subjectId, subjectName }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
 };
 
-export const deleteSubject = async (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 200);
+export const deleteSubject = async (subjectId) => {
+  const url = `${API_URL}${subjects}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ subjectId }), // Por recapitular, tu problema estaba aquí... estabas mandando id, pero el back esperaba subjectId, y por eso no te lo pillaba. Lo demás han sido mejoras "estéticas" o "cosméticas", es decir, no afectan a la funcionalidad del código, sino al estilo/simplicidad/complejidad. ok?
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
 };

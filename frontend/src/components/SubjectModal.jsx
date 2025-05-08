@@ -33,7 +33,7 @@ const SubjectModal = ({ subject, onClose, onEdit }) => {
           <Input
             defaultValue={subject?.id}
             id={"subjectId"}
-            name={"subjectName"}
+            name={"subjectId"}
             type="hidden"
             sx={{ display: "none" }}
           />

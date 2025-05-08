@@ -13,7 +13,6 @@ const SubjectsPage = () => {
   const [subjectToDelete, setSubjectToDelete] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Open and close Edit modal
   const handleOpenEdit = (s) => setSubjectToEdit(s);
   const handleCloseEdit = () => setSubjectToEdit(null);
 
@@ -24,34 +23,27 @@ const SubjectsPage = () => {
     const name = e.target.subjectName.value;
 
     if (id) {
-      await api.subjects.editSubject({ name });
-      setSubjects((prev) =>
-        prev.map((s) => (s.id === parseInt(id) ? { ...s, name } : s))
-      );
+      await api.subjects.editSubject(id, name);
     } else {
       await api.subjects.createSubject({ name });
-      setSubjects((prev) => {
-        const lastItem = prev[prev.length - 1];
-        return [...prev, { id: lastItem.id + 1, name }];
-      });
     }
+
+    await fetchSubjects();
     handleCloseEdit();
     setLoading(false);
   };
 
-  // Open and close Delete modal
   const handleOpenDelete = (id) => setSubjectToDelete(id);
   const handleCloseDelete = () => setSubjectToDelete(null);
 
   const handleDelete = async (id) => {
     setLoading(true);
-    await api.subjects.deleteSubject(id);
-    setSubjects((prev) => prev.filter((s) => s.id !== id));
+    const newSubjects = await api.subjects.deleteSubject(id);
+    setSubjects(newSubjects);
     handleCloseDelete();
     setLoading(false);
   };
 
-  // Fetch subjects from "api"
   const fetchSubjects = async () => {
     setLoading(true);
     const s = await api.subjects.getSubjects();

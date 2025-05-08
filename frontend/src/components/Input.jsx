@@ -10,6 +10,7 @@ const Input = ({
   onChange,
   color,
   defaultValue,
+  error,
 }) => {
   return (
     <MuiInput
@@ -23,6 +24,8 @@ const Input = ({
       onChange={onChange}
       color={color}
       defaultValue={defaultValue}
+      error={error}
+      helperText={error?.message}
     />
   );
 };

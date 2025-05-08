@@ -21,7 +21,14 @@ const style = {
   p: 4,
 };
 
-const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
+const CourseModal = ({
+  error,
+  subjects,
+  students,
+  course,
+  onClose,
+  onEdit,
+}) => {
   const subjectIds = course?.subjects.map((sub) => sub.subjectId) || [];
 
   return (
@@ -44,7 +51,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
             type="hidden"
             sx={{ display: "none" }}
           />
-          
+
           <Input
             defaultValue={course?.name}
             sx={{ mt: 4, minWidth: "100%" }}
@@ -52,6 +59,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
             id="courseName"
             name="courseName"
             label="Nombre"
+            error={error?.field === "name" ? error : undefined}
           />
           <Box sx={{ mt: 4, minWidth: "100%" }}>
             <FormControl sx={{ width: 300 }}>
@@ -61,6 +69,7 @@ const CourseModal = ({ subjects, students, course, onClose, onEdit }) => {
                 name="courseStudentIds"
                 multiple
                 defaultValue={course?.studentIds || []}
+                error={error?.field === "name" ? error : undefined}
                 input={
                   <OutlinedInput
                     id="select-multiple-chip"
