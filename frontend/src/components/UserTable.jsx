@@ -38,7 +38,7 @@ const UserTable = ({ users, roles, onEdit, onDelete }) => {
               <TableCell align="center">{row.photo}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">
-                {roles.find((role) => role.id === row.role)?.name}
+              {roles.find((role) => parseInt(role.id) === parseInt(row.role))?.name || "Rol no asignado"}
               </TableCell>
               <TableCell align="right">
                 <ButtonGroup

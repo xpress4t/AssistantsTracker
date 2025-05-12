@@ -1,20 +1,13 @@
+import { API_URL, roles } from "./constants";
+
 export const getRoles = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: 1,
-          name: "Administrador",
-        },
-        {
-          id: 2,
-          name: "Profesor",
-        },
-        {
-          id: 3,
-          name: "Alumno",
-        },
-      ]);
-    }, 200);
+  const url = `${API_URL}${roles}`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+
+  const data = await res.json();
+  return data;
 };

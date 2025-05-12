@@ -1,37 +1,48 @@
 import { API_URL, users } from "./constants";
 
 export const getUsers = async (roleId) => {
-  const url = `${API_URL}${users}`;
+  let url = `${API_URL}${users}`;
+  if (roleId) {
+    url += `?roleId=${roleId}`;
+  }
+
   const res = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
     },
   });
   const data = await res.json();
-
   return data;
 };
 
-export const createUser = async (user) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(user);
-    }, 200);
-  });
-};
-
 export const editUser = async (user) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(user);
-    }, 200);
+  const url = `${API_URL}${users}`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
 };
 
 export const deleteUser = async (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 200);
+  const url = `${API_URL}${users}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
 };

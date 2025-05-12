@@ -25,27 +25,21 @@ const UsersPage = () => {
     const name = e.target.userName.value;
     const lastname = e.target.userLastname.value;
     const email = e.target.userEmail.value;
-    const role = e.target.userRole.value;
+    const roleId = e.target.userRole.value;
 
     const updatedUser = {
       name,
       lastname,
       email,
-      role: parseInt(role),
+      roleId,
+      userId: id,
     };
 
-    if (id) {
-      await api.users.editUser(updatedUser);
-      setUsers((prev) =>
-        prev.map((u) => (u.id === parseInt(id) ? { ...u, ...updatedUser } : u))
-      );
-    } else {
-      await api.users.createUser(updatedUser);
-      setUsers((prev) => {
-        const lastItem = prev[prev.length - 1];
-        return [...prev, { id: lastItem.id + 1, ...updatedUser }];
-      });
-    }
+    const users = id
+      ? await api.users.editUser(updatedUser)
+      : await api.users.createUser(updatedUser);
+    setUsers(users);
+
     handleCloseEdit();
     setLoading(false);
   };
@@ -84,16 +78,6 @@ const UsersPage = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h3">Users</Typography>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
-          variant="contained"
-          color="success"
-          size="small"
-          onClick={() => handleOpenEdit({ id: null, name: "" })}
-        >
-          Create
-        </Button>
-      </Box>
       <UserTable
         users={users}
         roles={roles}

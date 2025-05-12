@@ -61,11 +61,7 @@ function editSubject($subject)
     $query = "UPDATE subjects SET name = '$name' WHERE subjectId = '$id'";
     mysqli_query($connectionBBDD, $query);
 
-    $query = "SELECT subjectId as id, name FROM subjects WHERE subjectId = '$id'";
-    $result = mysqli_query($connectionBBDD, $query);
-    $updatedSubject = mysqli_fetch_assoc($result);
-
-    return $updatedSubject;
+    return getSubjects();
 }
 
 function deleteSubject($subjectId)

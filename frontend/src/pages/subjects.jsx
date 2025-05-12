@@ -22,13 +22,11 @@ const SubjectsPage = () => {
     const id = e.target.subjectId.value;
     const name = e.target.subjectName.value;
 
-    if (id) {
-      await api.subjects.editSubject(id, name);
-    } else {
-      await api.subjects.createSubject({ name });
-    }
+    const subjects = id
+      ? await api.subjects.editSubject(id, name)
+      : await api.subjects.createSubject({ name });
+    setSubjects(subjects);
 
-    await fetchSubjects();
     handleCloseEdit();
     setLoading(false);
   };

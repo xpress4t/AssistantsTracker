@@ -8,6 +8,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode($subjects);
         exit;
 
+    case 'POST':
+        $body = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($body['subject']['name']) ||  empty($body['subject']['name'])) {
+            http_response_code(400);
+            echo json_encode([
+                'field' => 'name',
+                'message' => "Este campo es obligatorio"
+            ]);
+            die();
+        }
+
+        $subject = [];
+        $subject['name'] = trim($body['subject']['name']);
+
+        $subjects = createSubject($subject);
+        echo json_encode($subjects);
+        exit;
+
     case 'PATCH':
         $body = json_decode(file_get_contents("php://input"), true);
 
@@ -27,31 +46,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
             ]);
             exit;
         }
-        
+
         $subject = [];
         $subject['name'] = trim($body['subjectName']);
         $subject['id'] = $body['subjectId'];
 
         $subjects = editSubject($subject);
-        echo json_encode($subjects);
-        exit;
-
-    case 'POST':
-        $body = json_decode(file_get_contents("php://input"), true);
-
-        if (!isset($body['subject']['name']) ||  empty($body['subject']['name'])) {
-            http_response_code(400);
-            echo json_encode([
-                'field' => 'name',
-                'message' => "Este campo es obligatorio"
-            ]);
-            die();
-        }
-
-        $subject = [];
-        $subject['name'] = trim($body['subject']['name']);
-
-        $subjects = createSubject($subject);
         echo json_encode($subjects);
         exit;
 
