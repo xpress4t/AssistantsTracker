@@ -3,15 +3,12 @@ import { API_URL, courses } from "./constants";
 export const getCourses = async () => {
   const url = `${API_URL}${courses}`;
   const res = await fetch(url, {
-    // No es necesario escribir "method: "GET", ya que
-    // es el método por defecto :)
     headers: {
       "Content-Type": "application/json",
     },
   });
   if (!res.ok) {
     // Se lanza un error con el contenido de la respuesta
-    // Este error permite 
     throw await res.json();
   }
   const data = await res.json();
@@ -37,20 +34,34 @@ export const createCourse = async (course) => {
 };
 
 export const editCourse = async (course) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(course);
-    }, 200);
+  const url = `${API_URL}${courses}`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(course),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
+
+  const data = await res.json();
+  return data;
 };
 
 export const deleteCourse = async (id) => {
   const url = `${API_URL}${courses}`;
   const res = await fetch(url, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ id }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
 
   const data = await res.json();
   return data;

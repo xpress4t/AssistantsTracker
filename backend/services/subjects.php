@@ -11,7 +11,7 @@ function getSubjects($subjectId = null)
 
     $query = "SELECT subjects.subjectId as id, name FROM subjects";
 
-    $resultado = mysqli_query($connectionBBDD, $query);
+    $resultado = mysqli_query($connectionBBDD, $query); 
 
     if (!isset($resultado) || mysqli_num_rows($resultado) == 0) {
         return null;

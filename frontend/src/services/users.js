@@ -46,3 +46,14 @@ export const deleteUser = async (id) => {
   const data = await res.json();
   return data;
 };
+
+export const getFreeStudents = async () => {
+  const url = `${API_URL}${users}/?freeStudents`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  return data;
+};

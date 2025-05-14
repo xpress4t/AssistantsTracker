@@ -84,11 +84,46 @@ function deleteUser($userId)
 {
     global $databaseHost, $databaseUser, $databasePassword, $databaseName;
     $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
-    
+
     if (!$connectionBBDD) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
-    
+
+    $userId = mysqli_real_escape_string($connectionBBDD, $userId);
+    if (empty($userId)) {
+        http_response_code(400);
+        echo json_encode([
+            'field' => 'userId',
+            'message' => "Este campo es obligatorio"
+        ]);
+        die();
+    }
     $query = "DELETE FROM users WHERE userId = '$userId'";
     mysqli_query($connectionBBDD, $query);
+    return getUsers(null);
+}
+
+function getFreeStudents()
+{
+    global $databaseHost, $databaseUser, $databasePassword, $databaseName;
+    $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
+
+    if (!$connectionBBDD) {
+        die("Conexión fallida: " . mysqli_connect_error());
+    }
+
+    $query = "SELECT users.userId as id, roleId, classroomId FROM users JOIN user_roles ON users.userId = user_roles.userId LEFT JOIN user_classroom ON users.userId = user_classroom.userId WHERE roleId = 3 AND classroomId IS NULL";
+
+    $resultado = mysqli_query($connectionBBDD, $query);
+
+    if (!isset($resultado) || mysqli_num_rows($resultado) == 0) {
+        return null;
+    }
+
+    $users = array();
+    while ($row = mysqli_fetch_assoc($resultado)) {
+        $users[] = $row['id'];
+    }
+
+    return $users;
 }

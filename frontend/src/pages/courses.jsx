@@ -6,7 +6,7 @@ import CourseTable from "../components/CourseTable";
 import CourseModal from "../components/CourseModal";
 import CourseModalDelete from "../components/CourseModalDelete";
 import CourseTeacherModal from "@/components/CourseTeacherModal";
-import api from "../services/index";
+import api from "../services";
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -31,20 +31,20 @@ const CoursesPage = () => {
     const studentIds = e.target.courseStudentIds?.value;
     const subjectIds = e.target.courseSubjectIds?.value;
 
-    const course = courses.find((c) => c.id === Number(id));
+    const course = courses.find((c) => c.id === id);
 
     const updatedCourse = {
+      id,
       name,
-      studentIds: studentIds ? studentIds.split(",").map(Number) : [],
+      studentIds: studentIds ? studentIds.split(",") : [],
       subjects: subjectIds
         ? subjectIds.split(",").map((value) => {
-            const subjectId = Number(value);
             const existingSubject = course?.subjects.find(
-              (s) => s.subjectId === subjectId
+              (s) => s.subjectId === value
             );
 
             return {
-              subjectId,
+              subjectId: value,
               teacherId: existingSubject?.teacherId,
             };
           })
@@ -52,12 +52,8 @@ const CoursesPage = () => {
     };
 
     if (!!course) {
-      await api.courses.editCourse(updatedCourse);
-      setCourses((prev) =>
-        prev.map((c) =>
-          c.id === parseInt(id) ? { ...c, ...updatedCourse } : c
-        )
-      );
+      const c = await api.courses.editCourse(updatedCourse);
+      setCourses(c);
     } else {
       try {
         const c = await api.courses.createCourse(updatedCourse);
@@ -87,18 +83,26 @@ const CoursesPage = () => {
         teacherId: Number(elem.value),
       }));
 
-    console.log(updatedSubjects);
+    const course = courses.find((c) => String(c.id) === String(id));
+    if (!course) {
+      setLoading(false);
+      setEditError("No se encontró el curso.");
+      return;
+    }
 
-    setCourses((previous) =>
-      previous.map((course) =>
-        course.id === parseInt(id)
-          ? { ...course, subjects: updatedSubjects }
-          : course
-      )
-    );
+    const updatedCourse = {
+      id,
+      name: course.name,
+      studentIds: course.studentIds,
+      subjects: updatedSubjects,
+    };
 
-    // Actualizar el curso que estamos editando, para que course.subjects sea igual a nuestro objeto updatedSubjects
-
+    try {
+      const c = await api.courses.editCourse(updatedCourse);
+      setCourses(c);
+    } catch (e) {
+      setEditError(e);
+    }
     handleCloseTeacherModal();
     setLoading(false);
   };

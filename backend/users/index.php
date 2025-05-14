@@ -5,8 +5,15 @@ require_once("../services/index.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $roleId = isset($_GET['roleId']) ? $_GET['roleId'] : null;
-        $users = getUsers($roleId);
+        $users = [];
+
+        if (isset($_GET['freeStudents'])) {
+            $users = getFreeStudents() ?? [];
+        } else {
+            $roleId = isset($_GET['roleId']) ? $_GET['roleId'] : null;
+            $users = getUsers($roleId);
+        }
+
         echo json_encode($users);
         exit;
 
@@ -71,9 +78,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'DELETE':
         $body = json_decode(file_get_contents("php://input"), true);
-
+        if (!isset($body['userId']) || empty($body['userId'])) {
+            http_response_code(400);
+            echo json_encode([
+                'field' => 'userId',
+                'message' => "Este campo es obligatorio"
+            ]);
+            die();
+        }
+        $userId = $body['userId'];
+        $users = deleteUser($userId);
+        echo json_encode($users);
         exit;
-        
+
     default:
         http_response_code(405);
         echo json_encode(["error" => "Método no permitido"]);
