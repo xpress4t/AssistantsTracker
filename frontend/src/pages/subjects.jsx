@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Toolbar, Typography } from "@mui/material";
 import Button from "../components/Button";
 import Loading from "../components/Loading";
 import SubjectTable from "../components/SubjectTable";
 import SubjectModal from "../components/SubjectModal";
 import SubjectModalDelete from "../components/SubjectModalDelete";
+import AppBar from "../components/AppBar";
+import IconButton from "../components/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import api from "../services/index";
 
 const SubjectsPage = () => {
@@ -55,7 +58,43 @@ const SubjectsPage = () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h3">Subjects</Typography>
+      <AppBar>
+        <Toolbar>
+          <IconButton size="small" edge="start" color="inherit" sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="body1" color="inherit" sx={{ fontSize: "24px" }}>
+            Subjects
+          </Typography>
+
+          <Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
+            <Button
+              size="large"
+              color="inherit"
+              href="../courses"
+              variant="outlined"
+            >
+              Courses
+            </Button>
+            <Button
+              size="large"
+              color="inherit"
+              href="../subjects"
+              variant="outlined"
+            >
+              Subjects
+            </Button>
+            <Button
+              size="large"
+              color="inherit"
+              href="../users"
+              variant="outlined"
+            >
+              Users
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
         <Button
           variant="contained"

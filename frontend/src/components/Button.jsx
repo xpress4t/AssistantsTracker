@@ -10,7 +10,8 @@ const Button = ({
   startIcon,
   color = "",
   type,
-  onClick
+  onClick,
+  href,
 }) => {
   return (
     <MuiButton
@@ -23,6 +24,7 @@ const Button = ({
       color={color}
       type={type}
       onClick={onClick}
+      href={href}
     >
       {children}
     </MuiButton>
