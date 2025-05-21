@@ -4,6 +4,9 @@ import Button from "../components/Button";
 import FileInput from "../components/FileInput";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Avatar from "../components/Avatar";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { createUser } from "../services/users";
 
 export default function Home() {
   return (
@@ -17,13 +20,6 @@ export default function Home() {
         height: "100vh",
       }}
     >
-      <Box>
-        <Avatar
-          src="images/avatar.png"
-          alt="Avatar"
-          sx={{ width: 100, height: 100 }}
-        />
-      </Box>
       <Box
         sx={{ display: "flex", flexDirection: "column", gap: 2, width: 300 }}
       >
@@ -67,7 +63,7 @@ export default function Home() {
       </Box>
       <Box>
         <Button
-          children="Iniciar sesión"
+          children="Registrarse"
           variant="contained"
           color="primary"
         />

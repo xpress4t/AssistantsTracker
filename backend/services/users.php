@@ -54,6 +54,26 @@ function getUsers($roleId)
     return $users;
 }
 
+function createUser($user)
+{
+    // nombres, apellidos, email, password, photo
+    global $databaseHost, $databaseUser, $databasePassword, $databaseName;
+    $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
+    if (!$connectionBBDD) {
+        die("Conexión fallida: " . mysqli_connect_error());
+    }
+
+    $name = mysqli_real_escape_string($connectionBBDD, $user['name']);
+    $lastname = mysqli_real_escape_string($connectionBBDD, $user['lastname']);
+    $email = mysqli_real_escape_string($connectionBBDD, $user['email']);
+    $password = mysqli_real_escape_string($connectionBBDD, $user['password']);
+    $photo = mysqli_real_escape_string($connectionBBDD, $user['photo']);
+
+    $query = "INSERT INTO users (name, lastname, email, password, photo) VALUES ('$name', '$lastname', '$email', '$password', '$photo')";
+    mysqli_query($connectionBBDD, $query);
+    return getUserByEmail($email);
+}
+
 function editUser($user)
 {
     global $databaseHost, $databaseUser, $databasePassword, $databaseName;
