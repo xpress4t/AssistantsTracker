@@ -8,10 +8,10 @@ import SchoolIcon from "@mui/icons-material/School";
 
 export default function Home() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { setUser } = useGlobalState();
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();

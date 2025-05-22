@@ -57,81 +57,49 @@ const SubjectsPage = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 2 }}>
-      <AppBar>
-        <Toolbar>
-          <IconButton size="small" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="body1" color="inherit" sx={{ fontSize: "24px" }}>
-            Subjects
-          </Typography>
-
-          <Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
-            <Button
-              size="large"
-              color="inherit"
-              href="../courses"
-              variant="outlined"
-            >
-              Courses
-            </Button>
-            <Button
-              size="large"
-              color="inherit"
-              href="../subjects"
-              variant="outlined"
-            >
-              Subjects
-            </Button>
-            <Button
-              size="large"
-              color="inherit"
-              href="../users"
-              variant="outlined"
-            >
-              Users
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
-          variant="contained"
-          color="success"
-          size="small"
-          onClick={() => handleOpenEdit({ id: null, name: "" })}
-        >
-          Create
-        </Button>
+    <Box>
+      <Box>
+        <AppBar title="Subjects" />
       </Box>
-      <SubjectTable
-        subjects={subjects}
-        onEdit={handleOpenEdit}
-        onDelete={handleOpenDelete}
-      />
-      {loading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 8,
-          }}
-        >
-          <Loading />
+      <Box sx={{ p: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+          <Button
+            variant="contained"
+            color="success"
+            size="small"
+            onClick={() => handleOpenEdit({ id: null, name: "" })}
+          >
+            Create
+          </Button>
         </Box>
-      )}
-      <SubjectModal
-        subject={subjectToEdit}
-        onClose={handleCloseEdit}
-        onEdit={handleEdit}
-      />
-      <SubjectModalDelete
-        subject={subjectToDelete}
-        onClose={handleCloseDelete}
-        onDelete={handleDelete}
-      />
+        <SubjectTable
+          subjects={subjects}
+          onEdit={handleOpenEdit}
+          onDelete={handleOpenDelete}
+        />
+        {loading && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 8,
+            }}
+          >
+            <Loading />
+          </Box>
+        )}
+        <SubjectModal
+          subject={subjectToEdit}
+          onClose={handleCloseEdit}
+          onEdit={handleEdit}
+        />
+        <SubjectModalDelete
+          subject={subjectToDelete}
+          onClose={handleCloseDelete}
+          onDelete={handleDelete}
+        />
+      </Box>
     </Box>
   );
 };

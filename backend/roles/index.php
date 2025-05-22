@@ -10,6 +10,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     default:
         http_response_code(405);
-        echo json_encode(["errpr" => "Método no permitido"]);
+        echo json_encode(["error" => "Método no permitido"]);
         exit;
 }

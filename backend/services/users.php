@@ -13,7 +13,7 @@ function getUserByEmail($email)
     }
 
     $email = mysqli_real_escape_string($connectionBBDD, $email);
-    $query = "SELECT userId, name, lastname, password, email, password FROM users WHERE email = '$email'";
+    $query = "SELECT users.userId, name, lastname, password, email, roleId FROM users JOIN user_roles ON users.userId = user_roles.userId WHERE email = '$email'";
     $resultado = mysqli_query($connectionBBDD, $query);
 
     if (!isset($resultado) || mysqli_num_rows($resultado) == 0) {
@@ -46,7 +46,7 @@ function getUsers($roleId)
     $users = array();
     while ($row = mysqli_fetch_assoc($resultado)) {
         if (isset($row['photo']) && !empty($row['photo'])) {
-            $row['photo'] = "http://localhost" . $row['photo'];
+            $row['photo'] = "http://localhost/backend/assets/avatar/" . $row['photo'];
         }
         $users[] = $row;
     }
@@ -68,7 +68,6 @@ function createUser($user)
     $password = mysqli_real_escape_string($connectionBBDD, $user['password']);
     $photo = mysqli_real_escape_string($connectionBBDD, $user['photo']);
 
-    // Verificar si el email ya existe
     $checkQuery = "SELECT userId FROM users WHERE email = '$email'";
     $checkResult = mysqli_query($connectionBBDD, $checkQuery);
     if ($checkResult && mysqli_num_rows($checkResult) > 0) {

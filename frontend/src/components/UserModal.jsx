@@ -1,11 +1,9 @@
-import { InputLabel, Modal } from "@mui/material";
+import { Modal } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Input from "../components/Input";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import Select from "../components/Select";
 
 const style = {
   position: "absolute",
@@ -68,21 +66,15 @@ const UserModal = ({ user, roles, onClose, onEdit }) => {
             label="Email"
           />
           <Box sx={{ mt: 4, minWidth: "100%" }}>
-            <FormControl fullWidth>
-              <InputLabel id="userRole">Rol</InputLabel>
-              <Select
-                id="userRole"
-                name="userRole"
-                defaultValue={user?.role || ""}
-                label="Rol"
-              >
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    {role.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Select
+              id="userRole"
+              name="userRole"
+              label="Rol"
+              options={roles}
+              defaultValue={user?.role || ""}
+              multiple={false}
+              getOptionLabel={(role) => role.name}
+            />
           </Box>
 
           <Box

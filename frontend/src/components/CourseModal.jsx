@@ -1,15 +1,11 @@
-import { InputLabel, Modal } from "@mui/material";
+import { Modal } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Input from "../components/Input";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Chip from "@mui/material/Chip";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import { useEffect, useState } from "react";
 import api from "@/services";
+import Select from "../components/Select";
 
 const style = {
   position: "absolute",
@@ -85,82 +81,32 @@ const CourseModal = ({
               label="Nombre"
               error={error?.field === "name" ? error : undefined}
             />
-
+            
+            {/* Estudiantes */}
             <Box sx={{ mt: 4, minWidth: "100%" }}>
-              <FormControl sx={{ width: 300 }}>
-                <InputLabel>Estudiantes</InputLabel>
-                <Select
-                  id="courseStudentIds"
-                  name="courseStudentIds"
-                  multiple
-                  defaultValue={course?.studentIds || []}
-                  error={error?.field === "name" ? error : undefined}
-                  input={
-                    <OutlinedInput
-                      id="select-multiple-chip"
-                      label="Estudiantes"
-                    />
-                  }
-                  renderValue={(selected) => {
-                    return (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((id) => {
-                          const student = students.find(
-                            (user) => user.id === id
-                          );
-                          return (
-                            <Chip
-                              key={id}
-                              label={`${student?.name} ${student?.lastname}`}
-                            />
-                          );
-                        })}
-                      </Box>
-                    );
-                  }}
-                >
-                  {freeStudents?.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.name} {user.lastname}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Select
+                id="courseStudentIds"
+                name="courseStudentIds"
+                label="Estudiantes"
+                options={freeStudents}
+                defaultValue={course?.studentIds}
+                error={error?.field === "name" ? error : undefined}
+                getOptionLabel={(user) => `${user.name} ${user.lastname}`}
+                multiple
+              />
             </Box>
 
             {/* Asignaturas */}
             <Box sx={{ mt: 4, minWidth: "100%" }}>
-              <FormControl sx={{ width: 300 }}>
-                <InputLabel>Asignaturas</InputLabel>
-                <Select
-                  id="courseSubjectIds"
-                  name="courseSubjectIds"
-                  multiple
-                  defaultValue={subjectIds || []}
-                  input={
-                    <OutlinedInput
-                      id="select-multiple-chip"
-                      label="Asignaturas"
-                    />
-                  }
-                  renderValue={(selected) => {
-                    return (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((id) => {
-                          const subject = subjects.find((s) => s.id === id);
-                          return <Chip key={id} label={`${subject?.name}`} />;
-                        })}
-                      </Box>
-                    );
-                  }}
-                >
-                  {subjects?.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Select
+                id="courseSubjectIds"
+                name="courseSubjectIds"
+                label="Asignaturas"
+                options={subjects}
+                defaultValue={subjectIds}
+                getOptionLabel={(subject) => subject.name}
+                multiple
+              />
             </Box>
 
             <Box

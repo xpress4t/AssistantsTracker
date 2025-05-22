@@ -1,14 +1,7 @@
-import {
-  Modal,
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Modal, Box, Button, InputLabel } from "@mui/material";
 import Input from "../components/Input";
 import Grid from "@mui/material/Grid2";
+import Select from "../components/Select";
 import React from "react";
 
 const style = {
@@ -49,10 +42,15 @@ const CourseTeacherModal = ({
 
           <Grid container spacing={2}>
             {course?.subjects.map((courseSubject) => {
+              console.log(subjects, courseSubject);
+
               const subject = subjects.find(
                 (s) => s.id === courseSubject.subjectId
               );
-              const labelId = `subject-${courseSubject.subjectId}-teacher`;
+
+              if (!subject) {
+                return <p>Subject {courseSubject.subjectId} does not exist</p>;
+              }
 
               return (
                 <React.Fragment key={subject.name}>
@@ -66,24 +64,15 @@ const CourseTeacherModal = ({
                   </Grid>
 
                   <Grid size={{ xs: 12, sm: 6 }}>
-                    <FormControl fullWidth>
-                      <InputLabel id={labelId}>Profesor</InputLabel>
-                      <Select
-                        defaultValue={courseSubject.teacherId || ""}
-                        inputProps={{ id: courseSubject.subjectId }}
-                        labelId={labelId}
-                        name={labelId}
-                        label="Profesor"
-                      >
-                        {teachers.map((teacher) => {
-                          return (
-                            <MenuItem key={teacher.id} value={teacher.id}>
-                              {teacher.name}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                    <Select
+                      id={`teacher-select-${courseSubject.subjectId}`}
+                      name={`teacher-${courseSubject.subjectId}`}
+                      label="Profesor"
+                      options={teachers}
+                      defaultValue={courseSubject.teacherId || ""}
+                      multiple={false}
+                      getOptionLabel={(teacher) => teacher.name}
+                    />
                   </Grid>
                 </React.Fragment>
               );

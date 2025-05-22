@@ -158,102 +158,73 @@ const CoursesPage = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 2 }}>
-      <AppBar>
-        <Toolbar>
-          <IconButton size="small" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="body1" color="inherit" sx={{ fontSize: "24px" }}>
-            Courses
-          </Typography>
-
-          <Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
-            <Button
-              size="large"
-              color="inherit"
-              href="../courses"
-              variant="outlined"
-            >
-              Courses
-            </Button>
-            <Button
-              size="large"
-              color="inherit"
-              href="../subjects"
-              variant="outlined"
-            >
-              Subjects
-            </Button>
-            <Button
-              size="large"
-              color="inherit"
-              href="../users"
-              variant="outlined"
-            >
-              Users
-            </Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      <Typography variant="h3">Courses</Typography>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
-          variant="contained"
-          color="success"
-          size="small"
-          onClick={() =>
-            handleOpenEdit({ id: null, name: "", studentIds: [], subjects: [] })
-          }
-        >
-          Create
-        </Button>
+    <Box>
+      <Box>
+        <AppBar title="Courses" />
       </Box>
-      <CourseTable
-        users={students}
-        courses={courses}
-        subjects={subjects}
-        onEdit={handleOpenEdit}
-        onDelete={handleOpenDelete}
-        onAssign={handleOpenTeacherModal}
-      />
-
-      {loading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mt: 8,
-          }}
-        >
-          <Loading />
+      <Box sx={{ p: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+          <Button
+            variant="contained"
+            color="success"
+            size="small"
+            onClick={() =>
+              handleOpenEdit({
+                id: null,
+                name: "",
+                studentIds: [],
+                subjects: [],
+              })
+            }
+          >
+            Create
+          </Button>
         </Box>
-      )}
+        <CourseTable
+          users={students}
+          courses={courses}
+          subjects={subjects}
+          onEdit={handleOpenEdit}
+          onDelete={handleOpenDelete}
+          onAssign={handleOpenTeacherModal}
+        />
 
-      <CourseModal
-        course={courseToEdit}
-        error={editError}
-        students={students}
-        subjects={subjects}
-        onEdit={handleEdit}
-        onClose={handleCloseEdit}
-      />
+        {loading && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 8,
+            }}
+          >
+            <Loading />
+          </Box>
+        )}
 
-      <CourseTeacherModal
-        course={courseToAssign}
-        teachers={teachers}
-        subjects={subjects}
-        onEdit={handleSaveTeachers}
-        onClose={handleCloseTeacherModal}
-      />
+        <CourseModal
+          course={courseToEdit}
+          error={editError}
+          students={students}
+          subjects={subjects}
+          onEdit={handleEdit}
+          onClose={handleCloseEdit}
+        />
 
-      <CourseModalDelete
-        course={courseToDelete}
-        onDelete={handleDelete}
-        onClose={handleCloseDelete}
-      />
+        <CourseTeacherModal
+          course={courseToAssign}
+          teachers={teachers}
+          subjects={subjects}
+          onEdit={handleSaveTeachers}
+          onClose={handleCloseTeacherModal}
+        />
+
+        <CourseModalDelete
+          course={courseToDelete}
+          onDelete={handleDelete}
+          onClose={handleCloseDelete}
+        />
+      </Box>
     </Box>
   );
 };
