@@ -11,6 +11,9 @@ export const getUsers = async (roleId) => {
       "Content-Type": "application/json",
     },
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
   const data = await res.json();
   return data;
 };
@@ -24,6 +27,9 @@ export const createUser = async (user) => {
     },
     body: JSON.stringify({ user }),
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
   const data = await res.json();
   return data;
 };
@@ -51,7 +57,7 @@ export const deleteUser = async (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ userId : id }),
   });
   if (!res.ok) {
     throw await res.json();
@@ -67,6 +73,9 @@ export const getFreeStudents = async () => {
       "Content-Type": "application/json",
     },
   });
+  if (!res.ok) {
+    throw await res.json();
+  }
   const data = await res.json();
   return data;
 };

@@ -33,7 +33,7 @@ function getUsers($roleId)
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT users.userId as id, name, lastname, photo, email, roleId as role FROM users JOIN user_roles ON users.userId = user_roles.userId";
+    $query = "SELECT users.userId as id, name, lastname, photo, email, roleId as role FROM users LEFT JOIN user_roles ON users.userId = user_roles.userId";
     if (isset($roleId) && $roleId != null) {
         $query = $query . " WHERE roleId = " . $roleId;
     }
@@ -56,7 +56,6 @@ function getUsers($roleId)
 
 function createUser($user)
 {
-    // nombres, apellidos, email, password, photo
     global $databaseHost, $databaseUser, $databasePassword, $databaseName;
     $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
     if (!$connectionBBDD) {
@@ -68,6 +67,18 @@ function createUser($user)
     $email = mysqli_real_escape_string($connectionBBDD, $user['email']);
     $password = mysqli_real_escape_string($connectionBBDD, $user['password']);
     $photo = mysqli_real_escape_string($connectionBBDD, $user['photo']);
+
+    // Verificar si el email ya existe
+    $checkQuery = "SELECT userId FROM users WHERE email = '$email'";
+    $checkResult = mysqli_query($connectionBBDD, $checkQuery);
+    if ($checkResult && mysqli_num_rows($checkResult) > 0) {
+        http_response_code(409);
+        echo json_encode([
+            'field' => 'email',
+            'message' => "Este correo ya está en uso"
+        ]);
+        die();
+    }
 
     $query = "INSERT INTO users (name, lastname, email, password, photo) VALUES ('$name', '$lastname', '$email', '$password', '$photo')";
     mysqli_query($connectionBBDD, $query);
@@ -92,9 +103,16 @@ function editUser($user)
     $query1 = "UPDATE users SET name = '$name', lastname = '$lastname', email = '$email' WHERE userId = '$userId'";
     mysqli_query($connectionBBDD, $query1);
 
-    $query2 = "UPDATE user_roles SET roleId = '$roleId' WHERE userId = '$userId'";
-    if (!mysqli_query($connectionBBDD, $query2)) {
-        die("Error en la consulta: " . mysqli_error($connectionBBDD));
+    // Verifica si ya existe un registro en user_roles para este usuario
+    $check = mysqli_query($connectionBBDD, "SELECT * FROM user_roles WHERE userId = '$userId'");
+    if (mysqli_num_rows($check) > 0) {
+        // Si existe, actualiza
+        $query2 = "UPDATE user_roles SET roleId = '$roleId' WHERE userId = '$userId'";
+        mysqli_query($connectionBBDD, $query2);
+    } else {
+        // Si no existe, inserta
+        $query2 = "INSERT INTO user_roles (userId, roleId) VALUES ('$userId', '$roleId')";
+        mysqli_query($connectionBBDD, $query2);
     }
 
     return getUsers(null);
@@ -118,8 +136,12 @@ function deleteUser($userId)
         ]);
         die();
     }
-    $query = "DELETE FROM users WHERE userId = '$userId'";
-    mysqli_query($connectionBBDD, $query);
+    $query1 = "DELETE FROM user_roles WHERE userId = '$userId'";
+    mysqli_query($connectionBBDD, $query1);
+    $query2 = "DELETE FROM user_classroom WHERE userId = '$userId'";
+    mysqli_query($connectionBBDD, $query2);
+    $query3 = "DELETE FROM users WHERE userId = '$userId'";
+    mysqli_query($connectionBBDD, $query3);
     return getUsers(null);
 }
 
