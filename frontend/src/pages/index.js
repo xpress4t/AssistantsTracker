@@ -27,7 +27,7 @@ export default function Home() {
         },
       });
       if (!result.ok) {
-        setError("Datos incorrectas. Intenta de nuevo.");
+        setError("Datos incorrectos. Intenta de nuevo.");
         return;
       }
       const data = await result.json();

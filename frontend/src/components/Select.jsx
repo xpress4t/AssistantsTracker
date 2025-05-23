@@ -30,7 +30,7 @@ const Select = ({
   );
 
   return (
-    <FormControl fullWidth>
+    <FormControl sx={{ m: 1, minWidth: 120 }}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         id={id}

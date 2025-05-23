@@ -13,7 +13,7 @@ function getUserByEmail($email)
     }
 
     $email = mysqli_real_escape_string($connectionBBDD, $email);
-    $query = "SELECT users.userId, name, lastname, password, email, roleId FROM users JOIN user_roles ON users.userId = user_roles.userId WHERE email = '$email'";
+    $query = "SELECT users.userId, name, lastname, password, email, roleId FROM users LEFT JOIN user_roles ON users.userId = user_roles.userId WHERE email = '$email'";
     $resultado = mysqli_query($connectionBBDD, $query);
 
     if (!isset($resultado) || mysqli_num_rows($resultado) == 0) {
