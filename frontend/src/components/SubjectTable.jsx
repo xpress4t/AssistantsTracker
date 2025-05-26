@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import {
   TableContainer,
   Table,
@@ -7,6 +6,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Box,
 } from "@mui/material";
 
 const SubjectTable = ({ subjects, onEdit, onDelete }) => {
@@ -31,21 +31,24 @@ const SubjectTable = ({ subjects, onEdit, onDelete }) => {
               </TableCell>
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="right">
-                <ButtonGroup
-                  variant="contained"
-                  aria-label="Basic button group"
-                >
-                  <Button color="info" size="small" onClick={() => onEdit(row)}>
+                <Box sx={{ gap: 1, display: "flex", justifyContent: "end" }}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="small"
+                    onClick={() => onEdit(row)}
+                  >
                     Edit
                   </Button>
                   <Button
+                    variant="contained"
                     color="error"
                     size="small"
                     onClick={() => onDelete(row.id)}
                   >
                     Delete
                   </Button>
-                </ButtonGroup>
+                </Box>
               </TableCell>
             </TableRow>
           ))}

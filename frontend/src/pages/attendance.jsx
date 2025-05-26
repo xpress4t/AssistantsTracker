@@ -1,81 +1,179 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Select from "../components/Select";
 import AppBar from "../components/AppBar";
-import Datepicker from '../components/Datepicker';
+import Datepicker from "../components/Datepicker";
 import { useState, useEffect } from "react";
-import api from "../services/index";
+import AttendanceTable from "../components/AttendanceTable";
+import api from "../services";
+import SearchIcon from "@mui/icons-material/Search";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const AttendancePage = () => {
-  // Asignaturas
+  // Filtros
   const [subject, setSubject] = useState("");
-  const [subjects, setSubjects] = useState([]);
-
-  // Aulas
   const [course, setCourse] = useState("");
+  const [student, setStudent] = useState("");
+  const [dateFrom, setDateFrom] = useState();
+  const [dateTo, setDateTo] = useState();
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
+
+  // Datos
+  const [subjects, setSubjects] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [students, setStudents] = useState([]);
 
-  // Alumnos
-  const [user, setUser] = useState("");
-  const [users, setUsers] = useState([]);
+  // 1. Función para obtener todos los cursos
+  const fetchCourses = async () => {
+    setLoading(true);
+    const c = await api.courses.getCourses();
+    setCourses(c);
+    setLoading(false);
+  };
 
-  const [date, setDate] = useState([null, null]);
+  // 2. Función para obtener todos los estudiantes
+  const fetchStudents = async () => {
+    setLoading(true);
+    const users = await api.users.getUsers(3);
+    setStudents(users);
+    setLoading(false);
+  };
+
+  // 3. Función para obtener todas las asignaturas
+  const fetchSubjects = async () => {
+    setLoading(true);
+    const s = await api.subjects.getSubjects();
+    setSubjects(s);
+    setLoading(false);
+  };
+
+  // 4. Función para obtener los registros de asistencia (tener en cuenta los filtros)
+  const fetchAttendance = async () => {
+    setLoading(true);
+    const h = await api.attendance.getAttendance({
+      course,
+      student,
+      subject,
+      dateFrom,
+      dateTo,
+    });
+    setHistory(h);
+    setLoading(false);
+  };
+
+  const clearData = () => {
+    setCourse("");
+    setSubject("");
+    setStudent("");
+    setDateFrom(null);
+    setDateTo(null);
+    setHistory([]);
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      const subjects = await api.subjects.getSubjects();
-      setSubjects(subjects);
-      const courses = await api.courses.getCourses();
-      setCourses(courses);
-      const users = await api.users.getUsers();
-      setUsers(users);
-    };
-    fetch();
+    // 5. Obtener cursos estudiantes, asignaturas y asistencias
+    fetchCourses();
+    fetchStudents();
+    fetchSubjects();
   }, []);
 
-  return (
+  // 6. useEffect escuchando los filtros para pedir el historial de asistencia filtrado
+  // Aplicar debounce
 
+  return (
     <>
       <AppBar title="Attendance" />
-      <Box sx={{ p: 2, gap: 2 }}>
+      <Box sx={{ m: 2 }}>
         <Select
           id="course"
           name="course"
-          label="Courses"
+          label="Course"
           options={courses}
           value={course}
+          width="200px"
+          onClear={() => {
+            setCourse("");
+          }}
+          // get para el historico, luego post put y delete
           onChange={(e) => setCourse(e.target.value)}
           getOptionLabel={(opt) => opt.name}
         />
         <Select
           id="subject"
           name="subject"
-          label="Subjects"
+          label="Subject"
           options={subjects}
           value={subject}
+          width="200px"
+          onClear={() => {
+            setSubject("");
+          }}
           onChange={(e) => setSubject(e.target.value)}
           getOptionLabel={(opt) => opt.name}
         />
         <Select
           id="students"
           name="students"
-          label="Students"
-          options={users.filter((u) => u.role === "3")}
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
+          label="Student"
+          options={students.filter((u) => u.role === "3")}
+          value={student}
+          width="200px"
+          onClear={() => {
+            setStudent("");
+          }}
+          onChange={(e) => setStudent(e.target.value)}
           getOptionLabel={(opt) => opt.name}
         />
 
         <Datepicker
-          localText={{
-            start: "Desde",
-            end: "Hasta",
+          defaultValue={null}
+          label="Desde"
+          value={dateFrom}
+          onClear={() => {
+            setDateFrom(null);
           }}
-          value={date}
-          onChange={(d) => setDate(d)}
+          onChange={(df) => {
+            setDateFrom(df);
+          }}
+          clearable={true}
         />
-      </Box>
-        </>
 
+        <Datepicker
+          label="Hasta"
+          value={dateTo}
+          onClear={() => {
+            setDateTo(null);
+          }}
+          onChange={(dt) => setDateTo(dt)}
+          clearable={true}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={fetchAttendance}
+          sx={{ m: 2 }}
+        >
+          <SearchIcon />
+          Buscar
+        </Button>
+
+        <Button
+          variant="contained"
+          color="error"
+          onClick={clearData}
+          sx={{ m: 2 }}
+        >
+          <DeleteForeverIcon />
+          Limpiar
+        </Button>
+      </Box>
+
+      <AttendanceTable
+        history={history}
+        subjects={subjects}
+        students={students}
+      />
+    </>
   );
 };
 

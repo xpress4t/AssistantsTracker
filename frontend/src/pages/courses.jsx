@@ -1,4 +1,4 @@
-import { Box, Toolbar, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Loading from "../components/Loading";
@@ -7,8 +7,6 @@ import CourseModal from "../components/CourseModal";
 import CourseModalDelete from "../components/CourseModalDelete";
 import CourseTeacherModal from "@/components/CourseTeacherModal";
 import AppBar from "../components/AppBar";
-import IconButton from "../components/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import api from "../services";
 
 const CoursesPage = () => {
@@ -82,9 +80,11 @@ const CoursesPage = () => {
     const updatedSubjects = Array.from(e.target.elements)
       .filter((elem) => elem.tagName === "INPUT" && elem.id !== "courseId")
       .map((elem) => ({
-        subjectId: Number(elem.id),
-        teacherId: Number(elem.value),
+        subjectId: elem.name.replace("teacher-", ""),
+        teacherId: elem.value ? Number(elem.value) : null,
       }));
+
+    console.log({ updatedSubjects });
 
     const course = courses.find((c) => String(c.id) === String(id));
     if (!course) {

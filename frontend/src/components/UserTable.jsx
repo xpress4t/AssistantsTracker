@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import {
   TableContainer,
   Table,
@@ -7,6 +6,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Box,
 } from "@mui/material";
 
 const UserTable = ({ users, roles, onEdit, onDelete }) => {
@@ -27,7 +27,7 @@ const UserTable = ({ users, roles, onEdit, onDelete }) => {
         <TableBody>
           {users.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -38,24 +38,28 @@ const UserTable = ({ users, roles, onEdit, onDelete }) => {
               <TableCell align="center">{row.photo}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">
-              {roles.find((role) => parseInt(role.id) === parseInt(row.role))?.name || "Rol no asignado"}
+                {roles.find((role) => parseInt(role.id) === parseInt(row.role))
+                  ?.name || "Rol no asignado"}
               </TableCell>
               <TableCell align="right">
-                <ButtonGroup
-                  variant="contained"
-                  aria-label="Basic button group"
-                >
-                  <Button color="info" size="small" onClick={() => onEdit(row)}>
+                <Box sx={{ gap: 1, display: "flex", justifyContent: "end" }}>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="small"
+                    onClick={() => onEdit(row)}
+                  >
                     Edit
                   </Button>
                   <Button
+                    variant="contained"
                     color="error"
                     size="small"
                     onClick={() => onDelete(row.id)}
                   >
                     Delete
                   </Button>
-                </ButtonGroup>
+                </Box>
               </TableCell>
             </TableRow>
           ))}

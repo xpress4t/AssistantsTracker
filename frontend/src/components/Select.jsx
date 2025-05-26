@@ -6,7 +6,9 @@ import {
   OutlinedInput,
   Box,
   Chip,
+  IconButton,
 } from "@mui/material";
+import { ClearIcon } from "@mui/x-date-pickers";
 
 const Select = ({
   id,
@@ -17,7 +19,10 @@ const Select = ({
   error,
   renderValue,
   getOptionLabel,
+  endAdornment,
   multiple,
+  onClear,
+  width = "100%",
   ...props
 }) => {
   const defaultRenderValue = (selectedIds) => (
@@ -30,7 +35,7 @@ const Select = ({
   );
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
+    <FormControl sx={{ m: 1, width }}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         id={id}
@@ -42,6 +47,13 @@ const Select = ({
           <OutlinedInput id={`select-multiple-chip-${id}`} label={label} />
         }
         renderValue={multiple ? defaultRenderValue : undefined}
+        endAdornment={
+          onClear ? (
+            <IconButton onClick={onClear}>
+              <ClearIcon />
+            </IconButton>
+          ) : undefined
+        }
         {...props}
       >
         {options.map((option) => (

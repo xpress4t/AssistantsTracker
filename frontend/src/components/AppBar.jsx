@@ -23,7 +23,8 @@ const AppBar = ({ title }) => {
   const { user } = useGlobalState();
   const { push } = useRouter();
 
-  let pages = [];
+  // let pages = [];
+  let pages = adminPages;
   if (user?.roleId === "1") pages = adminPages;
   else if (user?.roleId === "2") pages = teacherPages;
   else if (user?.roleId === "3") pages = studentPages;
@@ -52,7 +53,6 @@ const AppBar = ({ title }) => {
         >
           {pages.map((page) => {
             const props = {
-              key: page.label,
               color: "inherit",
               onClick: () => onClick(page.href),
               variant: "outlined",
@@ -70,13 +70,17 @@ const AppBar = ({ title }) => {
 
             if (page.label) {
               return (
-                <Button {...props} startIcon={page.icon}>
+                <Button {...props} key={page.href} startIcon={page.icon}>
                   {page.label}
                 </Button>
               );
             }
 
-            return <IconButton {...props}>{page.icon}</IconButton>;
+            return (
+              <IconButton {...props} key={page.href} >
+                {page.icon}
+              </IconButton>
+            );
           })}
         </Box>
       </Toolbar>

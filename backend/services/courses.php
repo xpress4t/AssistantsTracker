@@ -59,9 +59,7 @@ function createCourse($course)
     {
         return [
             'subjectId' => mysqli_real_escape_string($GLOBALS['connectionBBDD'], $subject['subjectId']),
-            'teacherId' => isset($subject['teacherId'])
-                ? mysqli_real_escape_string($GLOBALS['connectionBBDD'], $subject['teacherId'])
-                : null,
+            'teacherId' => null,
         ];
     }
 
@@ -99,7 +97,7 @@ function createCourse($course)
     if (isset($subjects) && !empty($subjects)) {
         $insertSubjectQuery = "INSERT INTO classroom_subjects (classroomId, subjectId, teacherId) VALUES ";
         foreach ($subjects as $subjectId) {
-            $insertSubjectQuery = $insertSubjectQuery . "('" . $classroomId . "','" . $subjectId['subjectId'] . "', '" . $subjectId['teacherId'] . "'), ";
+            $insertSubjectQuery = $insertSubjectQuery . "('" . $classroomId . "','" . $subjectId['subjectId'] . "', NULL), ";
         }
         // Hacer un INSERT por cada materia, en la tabla classroom_subjects
         $insertSubjectQuery = rtrim($insertSubjectQuery, ", ");
@@ -126,11 +124,13 @@ function editCourse($course)
 
     function realEscapeSubjectData($subject)
     {
+        $teacherIdVal = isset($subject['teacherId'])
+            ? mysqli_real_escape_string($GLOBALS['connectionBBDD'], $subject['teacherId'])
+            : null;
+
         return [
             'subjectId' => mysqli_real_escape_string($GLOBALS['connectionBBDD'], $subject['subjectId']),
-            'teacherId' => isset($subject['teacherId'])
-                ? mysqli_real_escape_string($GLOBALS['connectionBBDD'], $subject['teacherId'])
-                : null,
+            'teacherId' => $teacherIdVal === '0' ? null : $teacherIdVal,
         ];
     }
 
@@ -162,8 +162,12 @@ function editCourse($course)
 
     if (isset($subjects) && !empty($subjects)) {
         $insertSubjectQuery = "INSERT INTO classroom_subjects (classroomId, subjectId, teacherId) VALUES ";
+
         foreach ($subjects as $subjectId) {
-            $insertSubjectQuery = $insertSubjectQuery . "('" . $classroomId . "','" . $subjectId['subjectId'] . "', '" . $subjectId['teacherId'] . "'), ";
+            $teacherIdValue = isset($subjectId['teacherId']) && !empty($subjectId['teacherId']) && !is_null($subjectId['teacherId'])
+                ? "'" . $subjectId['teacherId'] . "'"
+                : "NULL";
+            $insertSubjectQuery = $insertSubjectQuery . "('" . $classroomId . "','" . $subjectId['subjectId'] . "', " . $teacherIdValue . "), ";
         }
         // Hacer un INSERT por cada materia, en la tabla classroom_subjects
         $insertSubjectQuery = rtrim($insertSubjectQuery, ", ");
@@ -193,6 +197,12 @@ function deleteCourse($courseId)
 
     $query = "DELETE FROM classrooms WHERE classroomId = '$courseId'";
     mysqli_query($connectionBBDD, $query);
+
+    $query1 = "DELETE FROM user_classroom WHERE classroomId = '$courseId'";
+    mysqli_query($connectionBBDD, $query1);
+
+    $query2 = "DELETE FROM classroom_subjects WHERE classroomId = '$courseId'";
+    mysqli_query($connectionBBDD, $query2);
 
     return getCourses();
 }
