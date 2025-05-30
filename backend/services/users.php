@@ -84,6 +84,26 @@ function createUser($user)
     return getUserByEmail($email);
 }
 
+function cleanUpNonStudentUser($userId)
+{
+    global $databaseHost, $databaseUser, $databasePassword, $databaseName;
+    $connectionBBDD = mysqli_connect($databaseHost, $databaseUser, $databasePassword, $databaseName);
+
+    if (!$connectionBBDD) {
+        die("Conexión fallida: " . mysqli_connect_error());
+    }
+
+    mysqli_query(
+        $connectionBBDD,
+        "DELETE FROM user_classroom WHERE userId = '$userId'"
+    );
+    
+    mysqli_query(
+        $connectionBBDD,
+        "DELETE FROM attendance WHERE userId = '$userId'"
+    );
+}
+
 function editUser($user)
 {
     global $databaseHost, $databaseUser, $databasePassword, $databaseName;
@@ -112,6 +132,10 @@ function editUser($user)
         // Si no existe, inserta
         $query2 = "INSERT INTO user_roles (userId, roleId) VALUES ('$userId', '$roleId')";
         mysqli_query($connectionBBDD, $query2);
+    }
+
+    if ($roleId != 3) {
+        cleanUpNonStudentUser($userId);
     }
 
     return getUsers(null);
@@ -144,6 +168,7 @@ function deleteUser($userId)
     return getUsers(null);
 }
 
+
 function getFreeStudents()
 {
     global $databaseHost, $databaseUser, $databasePassword, $databaseName;
@@ -152,7 +177,7 @@ function getFreeStudents()
     if (!$connectionBBDD) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
-
+    
     $query = "SELECT users.userId as id, roleId, classroomId FROM users JOIN user_roles ON users.userId = user_roles.userId LEFT JOIN user_classroom ON users.userId = user_classroom.userId WHERE roleId = 3 AND classroomId IS NULL";
 
     $resultado = mysqli_query($connectionBBDD, $query);
