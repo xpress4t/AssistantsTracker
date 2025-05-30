@@ -77,7 +77,7 @@ const AppBar = ({ title }) => {
             }
 
             return (
-              <IconButton {...props} key={page.href} >
+              <IconButton {...props} key={page.href}>
                 {page.icon}
               </IconButton>
             );
