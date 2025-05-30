@@ -7,16 +7,38 @@ import AttendanceTable from "../components/AttendanceTable";
 import api from "../services";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AttendanceModal from "../components/AttendanceModal";
 
 const AttendancePage = () => {
   // Filtros
   const [subject, setSubject] = useState("");
   const [course, setCourse] = useState("");
   const [student, setStudent] = useState("");
-  const [dateFrom, setDateFrom] = useState();
-  const [dateTo, setDateTo] = useState();
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
+
+  const [attendanceToEdit, setAttendanceToEdit] = useState(null);
+  const handleCloseEdit = () => setAttendanceToEdit(null);
+
+  const handleEdit = async (attendance) => {
+    try {
+      if (attendance.id) {
+        await api.attendance.putAttendance(attendance);
+      } else {
+        await api.attendance.postAttendance(attendance);
+      }
+      fetchAttendance();
+      handleCloseEdit();
+    } catch (error) {
+      console.error("Error al guardar la asistencia:", error);
+    }
+  };
+
+  const handleEditClick = (attendance) => {
+    setAttendanceToEdit(attendance);
+  };
 
   // Datos
   const [subjects, setSubjects] = useState([]);
@@ -65,9 +87,17 @@ const AttendancePage = () => {
     setCourse("");
     setSubject("");
     setStudent("");
-    setDateFrom(null);
-    setDateTo(null);
+    setDateFrom("");
+    setDateTo("");
     setHistory([]);
+  };
+
+  const onHistorySet = async (userId, subjectId, value) => {
+    console.log("Creating attendance record:", { userId, subjectId, value });
+  };
+
+  const onHistoryUpdate = async (userId, subjectId, value) => {
+    console.log("Updating attendance record:", { userId, subjectId, value });
   };
 
   useEffect(() => {
@@ -94,7 +124,6 @@ const AttendancePage = () => {
           onClear={() => {
             setCourse("");
           }}
-          // get para el historico, luego post put y delete
           onChange={(e) => setCourse(e.target.value)}
           getOptionLabel={(opt) => opt.name}
         />
@@ -166,12 +195,29 @@ const AttendancePage = () => {
           <DeleteForeverIcon />
           Limpiar
         </Button>
+
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => setAttendanceToEdit({})}
+          sx={{ m: 2 }}
+        >
+          Crear Asistencia
+        </Button>
       </Box>
 
       <AttendanceTable
         history={history}
+        onHistorySet={onHistorySet}
+        onHistoryUpdate={onHistoryUpdate}
         subjects={subjects}
         students={students}
+        onEdit={handleEditClick}
+      />
+      <AttendanceModal
+        attendance={attendanceToEdit}
+        onClose={handleCloseEdit}
+        onEdit={handleEdit}
       />
     </>
   );
