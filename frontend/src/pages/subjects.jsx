@@ -65,8 +65,8 @@ const SubjectsPage = () => {
         <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
           <Button
             variant="contained"
-            color="success"
-            size="small"
+            color="primary"
+            size="medium"
             onClick={() => handleOpenEdit({ id: null, name: "" })}
           >
             Create

@@ -39,7 +39,7 @@ const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
                   <Button
                     variant="contained"
                     color="info"
-                    size="small"
+                    size="medium"
                     onClick={() => onEdit(row)}
                   >
                     Edit
@@ -47,7 +47,7 @@ const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
                   <Button
                     variant="contained"
                     color="info"
-                    size="small"
+                    size="medium"
                     onClick={() => onAssign(row)}
                   >
                     Asignar profesor
@@ -55,7 +55,7 @@ const CourseTable = ({ courses, onEdit, onAssign, onDelete }) => {
                   <Button
                     variant="contained"
                     color="error"
-                    size="small"
+                    size="medium"
                     onClick={() => onDelete(row.id)}
                   >
                     Delete

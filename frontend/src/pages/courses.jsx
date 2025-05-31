@@ -167,7 +167,7 @@ const CoursesPage = () => {
           <Button
             variant="contained"
             color="success"
-            size="small"
+            size="medium"
             onClick={() =>
               handleOpenEdit({
                 id: null,
