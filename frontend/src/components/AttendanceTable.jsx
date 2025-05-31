@@ -5,18 +5,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Button,
 } from "@mui/material";
 import AttendanceButtons from "./AttendanceButtons";
+import { formatDate } from "@/utils/dates";
+import AttendanceValue from "./AttendanceValue";
 
-const AttendanceTable = ({
-  history = [],
-  onHistorySet,
-  onHistoryUpdate,
-  subjects,
-  students,
-  onEdit,
-}) => (
+const AttendanceTable = ({ history = [], onClick, subjects, students }) => (
   <TableContainer>
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
       <TableHead>
@@ -33,42 +27,33 @@ const AttendanceTable = ({
           const student = students.find((s) => s.id === row.userId);
           const subject = subjects.find((s) => s.id === row.subjectId);
 
-          const getHandler = () => {
-            if (row.value !== undefined) {
-              return onHistoryUpdate;
-            }
-
-            return onHistorySet;
+          const onRowClick = (value) => {
+            onClick(row, value);
           };
-
-          const handleClick = getHandler();
 
           return (
             <TableRow key={row.attendanceId}>
-              <TableCell sx={{ maxWidth: "100px" }}>{row.date}</TableCell>
+              <TableCell sx={{ maxWidth: "100px" }}>
+                {formatDate(row.date)}
+              </TableCell>
               <TableCell>
                 {student?.name} {student?.lastname}
               </TableCell>
               <TableCell>{subject?.name}</TableCell>
               <TableCell align="right">
-                {/* <AttendanceValue value={row.value} /> */}
-                <AttendanceButtons
-                  onAbsentsClick={() => {
-                    handleClick(row.userId, row.subjectId, false);
-                  }}
-                  onAssistClick={() => {
-                    handleClick(row.userId, row.subjectId, true);
-                  }}
-                  value={row.value}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ m: 2 }}
-                  onClick={() => onEdit(row)}
-                >
-                  Editar Asistencia
-                </Button>
+                {row.disableButtons ? (
+                  <AttendanceValue value={row.value} />
+                ) : (
+                  <AttendanceButtons
+                    onAbsentsClick={() => {
+                      onRowClick(false);
+                    }}
+                    onAssistClick={() => {
+                      onRowClick(true);
+                    }}
+                    value={row.value}
+                  />
+                )}
               </TableCell>
             </TableRow>
           );
