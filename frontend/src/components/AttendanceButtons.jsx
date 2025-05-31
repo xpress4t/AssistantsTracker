@@ -6,18 +6,16 @@ const AttendanceButtons = ({ onAssistClick, onAbsentsClick, value }) => {
     <>
       <ButtonGroup>
         <Button
-          variant={value === true ? "contained" : "outlined"}
+          variant={value ? "contained" : "outlined"}
           color="success"
-          onClick={onAssistClick}
-          disabled={value === "1"}
+          onClick={value !== true ? onAssistClick : undefined}
         >
           Presente
         </Button>
         <Button
           variant={value === false ? "contained" : "outlined"}
           color="error"
-          onClick={onAbsentsClick}
-          disabled={value === "0"}
+          onClick={value !== false ? onAbsentsClick : undefined}
         >
           Ausente
         </Button>
