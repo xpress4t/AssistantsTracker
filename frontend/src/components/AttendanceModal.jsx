@@ -48,8 +48,6 @@ const AttendanceModal = ({
     });
   }
 
-  console.log({ history, existingHistory });
-
   const onCourseSelect = (e) => {
     setCourseId(e.target.value);
     setSubjectId("");

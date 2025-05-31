@@ -42,7 +42,6 @@ const CourseTeacherModal = ({
 
           <Grid container spacing={2}>
             {course?.subjects.map((courseSubject) => {
-              console.log(subjects, courseSubject);
 
               const subject = subjects.find(
                 (s) => s.id === courseSubject.subjectId

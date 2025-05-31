@@ -84,8 +84,6 @@ const CoursesPage = () => {
         teacherId: elem.value ? Number(elem.value) : null,
       }));
 
-    console.log({ updatedSubjects });
-
     const course = courses.find((c) => String(c.id) === String(id));
     if (!course) {
       setLoading(false);
