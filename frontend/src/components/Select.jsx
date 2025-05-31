@@ -23,6 +23,7 @@ const Select = ({
   multiple,
   onClear,
   width = "100%",
+  size,
   ...props
 }) => {
   const defaultRenderValue = (selectedIds) => (
@@ -35,7 +36,7 @@ const Select = ({
   );
 
   return (
-    <FormControl sx={{ m: 1, width }}>
+    <FormControl sx={{ m: 1, width }} size={size}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         id={id}
@@ -49,7 +50,7 @@ const Select = ({
         renderValue={multiple ? defaultRenderValue : undefined}
         endAdornment={
           onClear ? (
-            <IconButton onClick={onClear}>
+            <IconButton onClick={onClear} sx={{ mr: 2 }}>
               <ClearIcon />
             </IconButton>
           ) : undefined
