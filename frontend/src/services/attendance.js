@@ -1,8 +1,8 @@
-import { API_URL, attendance } from "./constants";
+import { API_URL, attendances } from "./constants";
 
 export const getAttendance = async (filters) => {
   const params = new URLSearchParams(filters);
-  let url = `${API_URL}${attendance}`;
+  let url = `${API_URL}${attendances}`;
 
   if (params.toString()) {
     url += `?${params.toString()}`;
@@ -17,39 +17,39 @@ export const getAttendance = async (filters) => {
   }
   const data = await res.json();
   return data;
-
-  // return [
-  //   {
-  //     id: "attendance1",
-  //     studentId: "2",
-  //     subjectId: "2",
-  //     date: "22/05/2025",
-  //     status: "absent",
-  //   },
-  //   {
-  //     id: "attendance2",
-  //     studentId: "3",
-  //     subjectId: "1",
-  //     date: "22/05/2025",
-  //     status: "present",
-  //   },
-  //   {
-  //     id: "attendance3",
-  //     studentId: "6",
-  //     subjectId: "3",
-  //     date: "23/05/2025",
-  //     status: "excused",
-  //   },
-  //   {
-  //     id: "attendance4",
-  //     studentId: "17",
-  //     subjectId: "4",
-  //     date: "24/05/2025",
-  //     status: "present",
-  //   },
-  // ];
 };
 
-export const putAttendance = async () => {};
+export const postAttendance = async (attendance, filters) => {
+  const url = `${API_URL}${attendances}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ attendance, filters }),
+  });
 
-export const postAttendance = async () => {};
+  if (!res.ok) {
+    throw await res.json();
+  }
+  const data = await res.json();
+  return data;
+};
+
+export const putAttendance = async (attendance, filters) => {
+  const url = `${API_URL}${attendances}`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ attendance, filters }),
+  });
+
+  if (!res.ok) {
+    throw await res.json();
+  }
+
+  const data = await res.json();
+  return data;
+};
