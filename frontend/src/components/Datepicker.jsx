@@ -14,6 +14,7 @@ const Datepicker = ({
   onClear,
   clearable = false,
   value,
+  size,
 }) => {
   return (
     <DatePicker
@@ -28,7 +29,7 @@ const Datepicker = ({
       // Para borrar el valor de la fecha cuando se hace clic en el button limpiar
       minDate={minDate ? moment(minDate) : undefined}
       // Para agregar el icono de limpiar
-      slotProps={{ field: { clearable } }}
+      slotProps={{ field: { clearable, size } }}
     />
   );
 };
