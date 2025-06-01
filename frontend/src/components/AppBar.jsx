@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import api from "@/services";
 
 const studentPages = [
   { icon: <Home />, href: "/dashboard" },
@@ -33,7 +34,7 @@ const adminPages = [
 ];
 
 const AppBar = ({ title }) => {
-  const { user } = useGlobalState();
+  const { user, setUser } = useGlobalState();
   const { push } = useRouter();
 
   let pages = adminPages;
@@ -54,6 +55,12 @@ const AppBar = ({ title }) => {
   const handleMenuClick = (href) => {
     push(href);
     handleCloseNavMenu();
+  };
+
+  const handleLogout = () => {
+    api.auth.logout();
+    setUser(undefined);
+    push("/");
   };
 
   return (
@@ -177,12 +184,7 @@ const AppBar = ({ title }) => {
               )
             )}
           </Box>
-          <IconButton
-            color="inherit"
-            onClick={() => {
-              push("/");
-            }}
-          >
+          <IconButton color="inherit" onClick={handleLogout}>
             <LogoutIcon />
           </IconButton>
         </Toolbar>
