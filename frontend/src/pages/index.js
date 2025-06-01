@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useGlobalState } from "../context";
 import { useRouter } from "next/router";
 import SchoolIcon from "@mui/icons-material/School";
+import api from "@/services";
 
 export default function Home() {
   const router = useRouter();
@@ -17,24 +18,11 @@ export default function Home() {
     event.preventDefault();
     setError("");
     try {
-      const url = "http://localhost/backend/login/";
-      const payload = { email, password };
-      const result = await fetch(url, {
-        body: JSON.stringify(payload),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!result.ok) {
-        setError("Datos incorrectos. Intenta de nuevo.");
-        return;
-      }
-      const data = await result.json();
+      const data = await api.auth.login(email, password);
       setUser(data);
       router.push("/dashboard");
     } catch (error) {
-      setError("Ocurrió un error. Intenta más tarde.");
+      setError("Ocurrió un error. Intenta más tarde.", error);
     }
   };
 
