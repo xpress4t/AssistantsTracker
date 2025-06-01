@@ -19,23 +19,6 @@ export const getUsers = async (roleId) => {
   return data;
 };
 
-export const createUser = async (user) => {
-  const url = `${API_URL}${users}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    // credentials: "include",
-    body: JSON.stringify({ user }),
-  });
-  if (!res.ok) {
-    throw await res.json();
-  }
-  const data = await res.json();
-  return data;
-};
-
 export const editUser = async (user) => {
   const url = `${API_URL}${users}`;
   const res = await fetch(url, {
