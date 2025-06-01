@@ -14,9 +14,11 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { createUser } from "../services/users";
+import api from "@/services";
+import { useGlobalState } from "@/context";
 
 export default function Home() {
+  const { setUser } = useGlobalState();
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -38,7 +40,7 @@ export default function Home() {
     const data = await res.json();
     return data.url;
   };
-  
+
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
     setPhoto(file);
@@ -62,8 +64,15 @@ export default function Home() {
       if (photo) {
         photoUrl = await uploadPhoto(photo);
       }
-      await createUser({ name, lastname, email, password, photo: photoUrl });
-      router.push("/");
+      const user = await api.auth.register({
+        name,
+        lastname,
+        email,
+        password,
+        photo: photoUrl,
+      });
+      setUser(user);
+      router.push("/dashboard");
     } catch (e) {
       if (e?.field === "email") {
         setError(e.message);
