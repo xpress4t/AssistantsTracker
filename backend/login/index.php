@@ -1,5 +1,6 @@
 <?php
-require("../utilities/cors.php");
+require_once("../utilities/session.php");
+require_once("../utilities/cors.php");
 require_once("../services/index.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -28,7 +29,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode($_SESSION['user']);
         exit;
 
-    case 'GET':
     default:
         exit;
 }

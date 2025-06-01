@@ -2,7 +2,8 @@
 
 use function PHPSTORM_META\type;
 
-require("../utilities/cors.php");
+require_once("../utilities/session.php");
+require_once("../utilities/cors.php");
 require_once("../services/index.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {

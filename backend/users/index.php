@@ -1,6 +1,7 @@
 <?php
 // Este archivo es /backend/users/index.php, que es el "endpoint" para obtener los usuarios
-require("../utilities/cors.php");
+require_once("../utilities/session.php");
+require_once("../utilities/cors.php");
 require_once("../services/index.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -15,56 +16,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
 
         echo json_encode($users);
-        exit;
-
-    case 'POST':
-        $body = json_decode(file_get_contents("php://input"), true);
-
-        if (!isset($body['user']['name']) || empty($body['user']['name'])) {
-            http_response_code(400);
-            echo json_encode([
-                'field' => 'name',
-                'message' => "Este campo es obligatorio"
-            ]);
-            die();
-        }
-
-        if (!isset($body['user']['lastname']) || empty($body['user']['lastname'])) {
-            http_response_code(400);
-            echo json_encode([
-                'field' => 'lastname',
-                'message' => "Este campo es obligatorio"
-            ]);
-            die();
-        }
-
-        if (!isset($body['user']['email']) || empty($body['user']['email'])) {
-            http_response_code(400);
-            echo json_encode([
-                'field' => 'email',
-                'message' => "Este campo es obligatorio"
-            ]);
-            die();
-        }
-
-        if (!isset($body['user']['password']) || empty($body['user']['password'])) {
-            http_response_code(400);
-            echo json_encode([
-                'field' => 'password',
-                'message' => "Este campo es obligatorio"
-            ]);
-            die();
-        }
-
-        $user = [];
-        $user['name'] = trim($body['user']['name']);
-        $user['lastname'] = trim($body['user']['lastname']);
-        $user['email'] = trim($body['user']['email']);
-        $user['password'] = trim($body['user']['password']);
-        $user['photo'] = isset($body['user']['photo']) ? trim($body['user']['photo']) : "";
-
-        $result = createUser($user);
-        echo json_encode($result);
         exit;
 
     case 'PUT':
