@@ -65,6 +65,7 @@ const UserModal = ({ user, roles, onClose, onEdit }) => {
             name="userEmail"
             label="Email"
           />
+          
           <Box sx={{ mt: 4, minWidth: "100%" }}>
             <Select
               id="userRole"

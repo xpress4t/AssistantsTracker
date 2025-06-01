@@ -31,7 +31,7 @@ function getAttendance($course, $student, $subject, $dateFrom, $dateTo)
             $conditions[] = "classroomId = '" . mysqli_real_escape_string($connectionBBDD, $course) . "'";
         }
         if (checkValue($student)) {
-            $conditions[] = "userId = '" . mysqli_real_escape_string($connectionBBDD, $student) . "'";
+            $conditions[] = "attendance.userId = '" . mysqli_real_escape_string($connectionBBDD, $student) . "'";
         }
         if (checkValue($subject)) {
             $conditions[] = "subjectId = '" . mysqli_real_escape_string($connectionBBDD, $subject) . "'";

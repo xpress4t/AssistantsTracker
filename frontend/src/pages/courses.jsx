@@ -164,7 +164,7 @@ const CoursesPage = () => {
         <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
           <Button
             variant="contained"
-            color="success"
+            color="primary"
             size="medium"
             onClick={() =>
               handleOpenEdit({

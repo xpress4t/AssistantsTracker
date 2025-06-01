@@ -31,8 +31,10 @@ const AttendanceTable = ({ history = [], onClick, subjects, students }) => (
             onClick(row, value);
           };
 
+          const key = row.attendanceId ?? row.userId;
+
           return (
-            <TableRow key={row.attendanceId}>
+            <TableRow key={key}>
               <TableCell sx={{ maxWidth: "100px" }}>
                 {formatDate(row.date)}
               </TableCell>

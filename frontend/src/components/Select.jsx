@@ -24,6 +24,7 @@ const Select = ({
   onClear,
   width = "100%",
   size,
+  sx,
   ...props
 }) => {
   const defaultRenderValue = (selectedIds) => (
@@ -36,7 +37,7 @@ const Select = ({
   );
 
   return (
-    <FormControl sx={{ m: 1, width }} size={size}>
+    <FormControl sx={{ ...sx, width }} size={size}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         id={id}

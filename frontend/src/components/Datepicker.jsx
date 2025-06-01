@@ -15,6 +15,7 @@ const Datepicker = ({
   clearable = false,
   value,
   size,
+  sx,
 }) => {
   return (
     <DatePicker
@@ -24,7 +25,7 @@ const Datepicker = ({
       onClear={onClear}
       onChange={onChange}
       defaultValue={defaultValue}
-      sx={{ m: 1, width: "200px" }}
+      sx={{ ...sx, width: "200px" }}
       value={value ? moment(value) : null}
       // Para borrar el valor de la fecha cuando se hace clic en el button limpiar
       minDate={minDate ? moment(minDate) : undefined}

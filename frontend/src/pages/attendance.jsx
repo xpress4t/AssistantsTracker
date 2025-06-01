@@ -125,6 +125,7 @@ const AttendancePage = () => {
             onChange={(e) => setCourse(e.target.value)}
             getOptionLabel={(opt) => opt.name}
             size="small"
+            sx={{ m: 1 }}
           />
 
           <Select
@@ -140,6 +141,7 @@ const AttendancePage = () => {
             onChange={(e) => setSubject(e.target.value)}
             getOptionLabel={(opt) => opt.name}
             size="small"
+            sx={{ m: 1 }}
           />
 
           <Select
@@ -155,6 +157,7 @@ const AttendancePage = () => {
             onChange={(e) => setStudent(e.target.value)}
             getOptionLabel={(opt) => opt.name}
             size="small"
+            sx={{ m: 1 }}
           />
 
           <Datepicker
@@ -169,6 +172,7 @@ const AttendancePage = () => {
             }}
             clearable={true}
             size="small"
+            sx={{ m: 1 }}
           />
 
           <Datepicker
@@ -180,6 +184,7 @@ const AttendancePage = () => {
             onChange={(dt) => setDateTo(dt)}
             clearable={true}
             size="small"
+            sx={{ m: 1 }}
           />
 
           <Button

@@ -115,6 +115,7 @@ const AttendanceModal = ({
           onChange={onCourseSelect}
           getOptionLabel={(opt) => opt.name}
           size="small"
+          sx={{ m: 1 }}
         />
 
         <Select
@@ -131,6 +132,7 @@ const AttendanceModal = ({
           onChange={(e) => setSubjectId(e.target.value)}
           getOptionLabel={(opt) => opt.name}
           size="small"
+          sx={{ m: 1 }}
         />
 
         <Datepicker
@@ -145,10 +147,10 @@ const AttendanceModal = ({
           }}
           clearable={true}
           size="small"
+          sx={{ m: 1 }}
         />
       </div>
 
-      {/* Tabla */}
       <div style={{ flex: 1 }}>
         <AttendanceTable
           history={history}

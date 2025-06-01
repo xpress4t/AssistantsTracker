@@ -6,6 +6,7 @@ export const getSubjects = async () => {
     headers: {
       "Content-Type": "application/json",
     },
+    // credentials: "include",
   });
   
   const data = await res.json();
@@ -19,6 +20,7 @@ export const createSubject = async (subject) => {
     headers: {
       "Content-Type": "application/json",
     },
+    // credentials: "include",
     body: JSON.stringify({ subject }),
   });
 
@@ -37,6 +39,7 @@ export const editSubject = async (subjectId, subjectName) => {
     headers: {
       "Content-Type": "application/json",
     },
+    // credentials: "include",
     body: JSON.stringify({ subjectId, subjectName }),
   });
 
@@ -55,7 +58,8 @@ export const deleteSubject = async (subjectId) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ subjectId }), // Por recapitular, tu problema estaba aquí... estabas mandando id, pero el back esperaba subjectId, y por eso no te lo pillaba.
+    // credentials: "include",
+    body: JSON.stringify({ subjectId }),
   });
   if (!res.ok) {
     throw await res.json();

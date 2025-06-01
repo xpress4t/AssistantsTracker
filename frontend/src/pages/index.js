@@ -53,12 +53,12 @@ export default function Home() {
         sx={{
           p: 0,
           borderRadius: 4,
-          minWidth: 700,
-          maxWidth: 900,
+          minWidth: { md: 700 },
+          maxWidth: { xs: "90%", md: 900 },
           width: "100%",
           boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { xs: "column", md: "row" },
           alignItems: "stretch",
           overflow: "hidden",
         }}
@@ -71,7 +71,9 @@ export default function Home() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            width: 280,
+            maxWidth: "100%",
+            width: { xs: "100%", md: 280 },
+            boxSizing: "border-box",
             p: 4,
           }}
         >
@@ -86,10 +88,12 @@ export default function Home() {
           >
             <SchoolIcon sx={{ fontSize: 48 }} />
           </Avatar>
+
           <Typography align="center" fontSize={18}>
             Bienvenido al sistema de registro de asistencias.
           </Typography>
         </Box>
+
         <Box
           sx={{
             flex: 1,
