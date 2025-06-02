@@ -3,12 +3,11 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { useState } from "react";
 import { useGlobalState } from "../context";
-import { useRouter } from "next/router";
 import SchoolIcon from "@mui/icons-material/School";
 import api from "@/services";
+import NextLink from "next/link";
 
 export default function Home() {
-  const router = useRouter();
   const { setUser } = useGlobalState();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +19,6 @@ export default function Home() {
     try {
       const data = await api.auth.login(email, password);
       setUser(data);
-      router.push("/dashboard");
     } catch (error) {
       setError("Ocurrió un error. Intenta más tarde.", error);
     }
@@ -144,7 +142,12 @@ export default function Home() {
           <Box sx={{ mt: 3, textAlign: "center" }}>
             <Typography fontSize={15}>
               ¿No tienes una cuenta?{" "}
-              <Link href="/register" underline="hover" color="primary">
+              <Link
+                href="/register"
+                underline="hover"
+                color="primary"
+                component={NextLink}
+              >
                 Regístrate
               </Link>
             </Typography>
