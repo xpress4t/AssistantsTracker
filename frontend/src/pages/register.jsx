@@ -72,7 +72,6 @@ export default function Home() {
         photo: photoUrl,
       });
       setUser(user);
-      router.push("/dashboard");
     } catch (e) {
       if (e?.field === "email") {
         setError(e.message);
