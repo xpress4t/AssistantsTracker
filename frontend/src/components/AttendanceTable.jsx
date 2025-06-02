@@ -10,13 +10,20 @@ import AttendanceButtons from "./AttendanceButtons";
 import { formatDate } from "@/utils/dates";
 import AttendanceValue from "./AttendanceValue";
 
-const AttendanceTable = ({ history = [], onClick, subjects, students }) => (
+const AttendanceTable = ({
+  history = [],
+  onClick,
+  subjects,
+  students,
+  courses,
+}) => (
   <TableContainer>
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
       <TableHead>
         <TableRow>
           <TableCell sx={{ maxWidth: "100px" }}>Fecha</TableCell>
           <TableCell>Nombre</TableCell>
+          <TableCell>Aula</TableCell>
           <TableCell>Asignatura</TableCell>
           <TableCell align="right">Asistencia</TableCell>
         </TableRow>
@@ -26,7 +33,7 @@ const AttendanceTable = ({ history = [], onClick, subjects, students }) => (
         {history.map((row) => {
           const student = students.find((s) => s.id === row.userId);
           const subject = subjects.find((s) => s.id === row.subjectId);
-
+          const course = courses.find((s) => s.id === row.classroomId);
           const onRowClick = (value) => {
             onClick(row, value);
           };
@@ -41,9 +48,10 @@ const AttendanceTable = ({ history = [], onClick, subjects, students }) => (
               <TableCell>
                 {student?.name} {student?.lastname}
               </TableCell>
+              <TableCell>{course?.name}</TableCell>
               <TableCell>{subject?.name}</TableCell>
               <TableCell align="right">
-                {row.disableButtons ? (
+                {row.disableButtons || !onClick ? (
                   <AttendanceValue value={row.value} />
                 ) : (
                   <AttendanceButtons

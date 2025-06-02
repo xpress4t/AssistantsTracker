@@ -18,26 +18,27 @@ import { useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import api from "@/services";
 
+const commonPages = [{ icon: <Home />, href: "/dashboard" }];
+
 const studentPages = [
-  { icon: <Home />, href: "/dashboard" },
+  ...commonPages,
   { label: "Attendance", href: "/attendance" },
 ];
 
 const teacherPages = [...studentPages];
 
 const adminPages = [
-  { icon: <Home />, href: "/dashboard" },
-  { label: "Users", href: "/users" },
-  { label: "Subjects", href: "/subjects" },
+  ...commonPages,
   { label: "Courses", href: "/courses" },
-  { label: "Attendance", href: "/attendance" },
+  { label: "Subjects", href: "/subjects" },
+  { label: "Users", href: "/users" },
 ];
 
 const AppBar = ({ title }) => {
   const { user, setUser } = useGlobalState();
   const { push } = useRouter();
 
-  let pages = adminPages;
+  let pages = [];
   if (user?.roleId === "1") pages = adminPages;
   else if (user?.roleId === "2") pages = teacherPages;
   else if (user?.roleId === "3") pages = studentPages;
@@ -60,7 +61,6 @@ const AppBar = ({ title }) => {
   const handleLogout = () => {
     api.auth.logout();
     setUser(undefined);
-    push("/");
   };
 
   return (
@@ -146,47 +146,36 @@ const AppBar = ({ title }) => {
               fontFamily: "Arial",
             }}
           >
-            {pages.map((page) =>
-              page.label ? (
-                <Button
-                  color="inherit"
-                  onClick={() => push(page.href)}
-                  variant="outlined"
-                  key={page.href}
-                  startIcon={page.icon}
-                  sx={{
-                    alignItems: "center",
-                    fontFamily: "Arial",
-                    fontSize: "16px",
-                    borderRadius: "6px",
-                    border: "none",
-                    px: 2,
-                  }}
-                >
-                  {page.label}
-                </Button>
-              ) : (
-                <IconButton
-                  color="inherit"
-                  onClick={() => push(page.href)}
-                  key={page.href}
-                  sx={{
-                    alignItems: "center",
-                    fontFamily: "Arial",
-                    fontSize: "16px",
-                    borderRadius: "6px",
-                    border: "none",
-                    px: 2,
-                  }}
-                >
+            {pages.map((page) => {
+              const props = {
+                color: "inherit",
+                onClick: () => push(page.href),
+                variant: "text",
+              };
+
+              if (page.label) {
+                return (
+                  <Button {...props} key={page.href} startIcon={page.icon}>
+                    {page.label}
+                  </Button>
+                );
+              }
+
+              return (
+                <IconButton {...props} key={page.href} sx={{ borderRadius: 1 }}>
                   {page.icon}
                 </IconButton>
-              )
-            )}
+              );
+            })}
+
+            <IconButton
+              color="inherit"
+              onClick={handleLogout}
+              sx={{ borderRadius: 1 }}
+            >
+              <LogoutIcon />
+            </IconButton>
           </Box>
-          <IconButton color="inherit" onClick={handleLogout}>
-            <LogoutIcon />
-          </IconButton>
         </Toolbar>
       </Container>
     </MuiAppBar>
