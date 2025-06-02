@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import AttendanceTable from "../components/AttendanceTable";
 import AttendanceModal from "../components/AttendanceModal";
 import api from "../services";
+import { useGlobalState } from "@/context";
+import AttendanceStudent from "@/components/AttendanceStudent";
 
 const AttendancePage = () => {
   // Filtros
@@ -20,11 +22,12 @@ const AttendancePage = () => {
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
   const [attendanceModalOpen, setAttendanceModalOpen] = useState();
+  const { user } = useGlobalState();
 
   // Datos
-  const [subjects, setSubjects] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const handleCloseEdit = () => setAttendanceModalOpen(false);
 
@@ -55,17 +58,24 @@ const AttendancePage = () => {
   // Función para obtener los registros de asistencia (tener en cuenta los filtros)
   const fetchAttendance = async (disableFilters = false) => {
     setLoading(true);
-    const h = await api.attendance.getAttendance(
-      disableFilters === true
-        ? {}
-        : {
-            course,
-            student,
-            subject,
-            dateFrom,
-            dateTo,
-          }
-    );
+
+    const studentFilter = user?.roleId === "3" ? user.userId : undefined;
+
+    let filters = {
+      student: studentFilter,
+    };
+
+    if (disableFilters !== true) {
+      filters = {
+        course,
+        student: studentFilter || student,
+        subject,
+        dateFrom: dateFrom ?? "",
+        dateTo: dateTo ?? "",
+      };
+    }
+
+    const h = await api.attendance.getAttendance(filters);
     setHistory(h);
     setLoading(false);
   };
@@ -99,6 +109,28 @@ const AttendancePage = () => {
     fetchSubjects();
     fetchAttendance();
   }, []);
+
+  return (
+    <AttendanceStudent
+      course={course}
+      courses={courses}
+      dateFrom={dateFrom}
+      dateTo={dateTo}
+      history={history}
+      onClear={clearData}
+      onSearch={fetchAttendance}
+      setCourse={setCourse}
+      setDateFrom={setDateFrom}
+      setDateTo={setDateTo}
+      setStudent={setStudent}
+      setSubject={setSubject}
+      subject={subject}
+      subjects={subjects}
+      student={student}
+      students={students}
+      user={user}
+    />
+  );
 
   return (
     <>
