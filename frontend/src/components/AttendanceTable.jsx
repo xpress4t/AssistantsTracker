@@ -35,7 +35,7 @@ const AttendanceTable = ({
           const subject = subjects.find((s) => s.id === row.subjectId);
           const course = courses.find((s) => s.id === row.classroomId);
           const onRowClick = (value) => {
-            onClick(row, value);
+            onClick(row.attendanceId, value);
           };
 
           const key = row.attendanceId ?? row.userId;

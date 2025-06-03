@@ -117,10 +117,11 @@ const AttendancePage = () => {
       history={history}
       modalOpen={attendanceModalOpen}
       onClear={clearData}
-      onSearch={fetchAttendance}
+      onHistoryUpdate={user?.roleId === "2" ? onHistoryUpdate : undefined}
       onModalOpen={handleOpenEdit}
       onModalClose={handleCloseEdit}
       onModalCreate={onAttendanceCreate}
+      onSearch={fetchAttendance}
       setCourse={setCourse}
       setDateFrom={setDateFrom}
       setDateTo={setDateTo}
