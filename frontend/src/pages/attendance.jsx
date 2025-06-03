@@ -1,16 +1,7 @@
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import SearchIcon from "@mui/icons-material/Search";
-import { Box, Button, Toolbar } from "@mui/material";
-import { CalendarIcon } from "@mui/x-date-pickers";
-import Select from "../components/Select";
-import AppBar from "../components/AppBar";
-import Datepicker from "../components/Datepicker";
 import { useState, useEffect } from "react";
-import AttendanceTable from "../components/AttendanceTable";
-import AttendanceModal from "../components/AttendanceModal";
-import api from "../services";
+import api from "@/services";
 import { useGlobalState } from "@/context";
-import AttendanceStudent from "@/components/AttendanceStudent";
+import AttendanceScreen from "@/components/AttendanceScreen";
 
 const AttendancePage = () => {
   // Filtros
@@ -30,6 +21,7 @@ const AttendancePage = () => {
   const [subjects, setSubjects] = useState([]);
 
   const handleCloseEdit = () => setAttendanceModalOpen(false);
+  const handleOpenEdit = () => setAttendanceModalOpen(true);
 
   // Función para obtener todos los cursos
   const fetchCourses = async () => {
@@ -61,12 +53,18 @@ const AttendancePage = () => {
 
     const studentFilter = user?.roleId === "3" ? user.userId : undefined;
 
-    let filters = {
-      student: studentFilter,
-    };
+    let filters = {};
+
+    if (studentFilter) {
+      filters = {
+        ...filters,
+        student: studentFilter,
+      };
+    }
 
     if (disableFilters !== true) {
       filters = {
+        ...filters,
         course,
         student: studentFilter || student,
         subject,
@@ -111,14 +109,18 @@ const AttendancePage = () => {
   }, []);
 
   return (
-    <AttendanceStudent
+    <AttendanceScreen
       course={course}
       courses={courses}
       dateFrom={dateFrom}
       dateTo={dateTo}
       history={history}
+      modalOpen={attendanceModalOpen}
       onClear={clearData}
       onSearch={fetchAttendance}
+      onModalOpen={handleOpenEdit}
+      onModalClose={handleCloseEdit}
+      onModalCreate={onAttendanceCreate}
       setCourse={setCourse}
       setDateFrom={setDateFrom}
       setDateTo={setDateTo}
@@ -130,150 +132,6 @@ const AttendancePage = () => {
       students={students}
       user={user}
     />
-  );
-
-  return (
-    <>
-      <AppBar title="Attendance" />
-      <Toolbar
-        sx={{
-          alignItems: "flex-start",
-          display: "flex",
-          mt: 1,
-          px: { xs: 0, sm: 0, md: 1, lg: 1, xl: 1 },
-        }}
-      >
-        <Box sx={{ flex: 1, height: "100%" }}>
-          <Select
-            id="course"
-            name="course"
-            label="Course"
-            options={courses}
-            value={course}
-            width="200px"
-            onClear={() => {
-              setCourse("");
-            }}
-            onChange={(e) => setCourse(e.target.value)}
-            getOptionLabel={(opt) => opt.name}
-            size="small"
-            sx={{ m: 1 }}
-          />
-
-          <Select
-            id="subject"
-            name="subject"
-            label="Subject"
-            options={subjects}
-            value={subject}
-            width="200px"
-            onClear={() => {
-              setSubject("");
-            }}
-            onChange={(e) => setSubject(e.target.value)}
-            getOptionLabel={(opt) => opt.name}
-            size="small"
-            sx={{ m: 1 }}
-          />
-
-          <Select
-            id="students"
-            name="students"
-            label="Student"
-            options={students.filter((u) => u.role === "3")}
-            value={student}
-            width="200px"
-            onClear={() => {
-              setStudent("");
-            }}
-            onChange={(e) => setStudent(e.target.value)}
-            getOptionLabel={(opt) => opt.name}
-            size="small"
-            sx={{ m: 1 }}
-          />
-
-          <Datepicker
-            defaultValue={null}
-            label="Desde"
-            value={dateFrom}
-            onClear={() => {
-              setDateFrom(null);
-            }}
-            onChange={(df) => {
-              setDateFrom(df);
-            }}
-            clearable={true}
-            size="small"
-            sx={{ m: 1 }}
-          />
-
-          <Datepicker
-            label="Hasta"
-            value={dateTo}
-            onClear={() => {
-              setDateTo(null);
-            }}
-            onChange={(dt) => setDateTo(dt)}
-            clearable={true}
-            size="small"
-            sx={{ m: 1 }}
-          />
-
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={fetchAttendance}
-            sx={{ m: 1 }}
-            startIcon={<SearchIcon />}
-          >
-            Buscar
-          </Button>
-
-          <Button
-            variant="contained"
-            color="error"
-            onClick={clearData}
-            sx={{ m: 1 }}
-            startIcon={<DeleteForeverIcon />}
-          >
-            Limpiar
-          </Button>
-        </Box>
-
-        <Box sx={{ height: "100%" }}>
-          <Button
-            startIcon={<CalendarIcon />}
-            variant="contained"
-            sx={{ m: 1 }}
-            onClick={() => {
-              clearData();
-              fetchAttendance(true);
-
-              setAttendanceModalOpen(true);
-            }}
-          >
-            Create
-          </Button>
-        </Box>
-      </Toolbar>
-
-      <AttendanceTable
-        history={history}
-        subjects={subjects}
-        students={students}
-        onClick={(row, value) => onHistoryUpdate(row.attendanceId, value)}
-      />
-
-      <AttendanceModal
-        onClose={handleCloseEdit}
-        onCreate={onAttendanceCreate}
-        subjects={subjects}
-        students={students}
-        courses={courses}
-        open={attendanceModalOpen}
-        existingHistory={history}
-      />
-    </>
   );
 };
 
