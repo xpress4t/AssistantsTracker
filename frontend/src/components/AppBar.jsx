@@ -9,6 +9,7 @@ import {
   Container,
   Menu,
   MenuItem,
+  Avatar,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -168,6 +169,9 @@ const AppBar = ({ title }) => {
               );
             })}
 
+            <Avatar alt={user?.name} src={user?.photo}>
+              {user?.name?.[0]}
+            </Avatar>
             <IconButton
               color="inherit"
               onClick={handleLogout}

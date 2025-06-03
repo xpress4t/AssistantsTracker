@@ -13,7 +13,7 @@ function getUserByEmail($email)
   }
 
   $email = mysqli_real_escape_string($connectionBBDD, $email);
-  $query = "SELECT users.userId, name, lastname, password, email, roleId FROM users LEFT JOIN user_roles ON users.userId = user_roles.userId WHERE email = '$email'";
+  $query = "SELECT users.userId, name, lastname, password, email, roleId, photo FROM users LEFT JOIN user_roles ON users.userId = user_roles.userId WHERE email = '$email'";
   $resultado = mysqli_query($connectionBBDD, $query);
 
   if (!isset($resultado) || mysqli_num_rows($resultado) == 0) {
@@ -21,6 +21,11 @@ function getUserByEmail($email)
   }
 
   $user = $resultado->fetch_assoc();
+
+  if (isset($user['photo']) && !empty($user['photo'])) {
+    $user['photo'] = "http://localhost/backend/assets/avatar/" . $user['photo'];
+  }
+
   return $user;
 }
 
