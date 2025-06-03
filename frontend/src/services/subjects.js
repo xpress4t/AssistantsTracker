@@ -6,7 +6,7 @@ export const getSubjects = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
   
   const data = await res.json();
@@ -20,7 +20,7 @@ export const createSubject = async (subject) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ subject }),
   });
 
@@ -39,7 +39,7 @@ export const editSubject = async (subjectId, subjectName) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ subjectId, subjectName }),
   });
 
@@ -58,7 +58,7 @@ export const deleteSubject = async (subjectId) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ subjectId }),
   });
   if (!res.ok) {

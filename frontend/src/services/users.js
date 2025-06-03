@@ -10,7 +10,7 @@ export const getUsers = async (roleId) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
   if (!res.ok) {
     throw await res.json();
@@ -26,7 +26,7 @@ export const editUser = async (user) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ user }),
   });
   if (!res.ok) {
@@ -43,7 +43,7 @@ export const deleteUser = async (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ userId: id }),
   });
   if (!res.ok) {
@@ -59,7 +59,7 @@ export const getFreeStudents = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
   if (!res.ok) {
     throw await res.json();

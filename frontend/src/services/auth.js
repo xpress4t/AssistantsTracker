@@ -22,7 +22,7 @@ export const login = async (email, password) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
   if (!res.ok) {
@@ -39,7 +39,7 @@ export const register = async (user) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify(user),
   });
   if (!res.ok) {
@@ -56,7 +56,7 @@ export const logout = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
   if (!res.ok) {
     throw await res.json();

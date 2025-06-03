@@ -6,7 +6,7 @@ export const getCourses = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "same-origin",
+    credentials: "include",
   });
   if (!res.ok) {
     // Se lanza un error con el contenido de la respuesta
@@ -23,7 +23,7 @@ export const createCourse = async (course) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "same-origin",
+    credentials: "include",
     body: JSON.stringify(course),
   });
 
@@ -42,7 +42,7 @@ export const editCourse = async (course) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "same-origin",
+    credentials: "include",
     body: JSON.stringify(course),
   });
   if (!res.ok) {
@@ -60,7 +60,7 @@ export const deleteCourse = async (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "same-origin",
+    credentials: "include",
     body: JSON.stringify({ id }),
   });
   if (!res.ok) {

@@ -11,7 +11,7 @@ export const getAttendance = async (filters) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
   if (!res.ok) {
     throw await res.json();
@@ -27,7 +27,7 @@ export const postAttendance = async (attendance, filters) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ attendance, filters }),
   });
 
@@ -45,7 +45,7 @@ export const putAttendance = async (attendance, filters) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
     body: JSON.stringify({ attendance, filters }),
   });
 

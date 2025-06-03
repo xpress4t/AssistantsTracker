@@ -6,7 +6,7 @@ export const getRoles = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    // credentials: "include",
+    credentials: "include",
   });
 
   const data = await res.json();
