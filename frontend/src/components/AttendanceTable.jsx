@@ -13,9 +13,9 @@ import AttendanceValue from "./AttendanceValue";
 const AttendanceTable = ({
   history = [],
   onClick,
-  subjects,
-  students,
-  courses,
+  subjects = [],
+  students = [],
+  courses = [],
 }) => (
   <TableContainer>
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
