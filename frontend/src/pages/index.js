@@ -28,30 +28,34 @@ export default function Home() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%)",
+        width: "100vw",
+        background:
+          "linear-gradient(135deg, #1976d2 0%, #90caf9 60%, #f3e5f5 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        overflow: "auto",
       }}
     >
       <Paper
-        elevation={8}
+        elevation={12}
         sx={{
           p: 0,
-          borderRadius: 4,
+          borderRadius: 6,
           minWidth: { md: 700 },
           maxWidth: { xs: "90%", md: 900 },
           width: "100%",
-          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15)",
+          boxShadow: "0 12px 40px 0 rgba(25, 118, 210, 0.18)",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: "stretch",
           overflow: "hidden",
+          backdropFilter: "blur(2px)",
         }}
       >
         <Box
           sx={{
-            bgcolor: "#1976d2",
+            bgcolor: "transparent",
             color: "#fff",
             display: "flex",
             flexDirection: "column",
@@ -60,7 +64,9 @@ export default function Home() {
             maxWidth: "100%",
             width: { xs: "100%", md: 280 },
             boxSizing: "border-box",
-            p: 4,
+            p: 5,
+            background: "linear-gradient(135deg, #1976d2 60%, #64b5f6 100%)",
+            position: "relative",
           }}
         >
           <Avatar
@@ -75,8 +81,11 @@ export default function Home() {
             <SchoolIcon sx={{ fontSize: 48 }} />
           </Avatar>
 
-          <Typography align="center" fontSize={18}>
-            Bienvenido al sistema de registro de asistencias.
+          <Typography align="center" fontSize={22} fontWeight={700} mb={1}>
+            Bienvenido
+          </Typography>
+          <Typography align="center" fontSize={16}>
+            Sistema de registro de asistencias
           </Typography>
         </Box>
 
@@ -86,7 +95,7 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            p: 5,
+            p: { xs: 3, md: 6 },
             bgcolor: "#fff",
           }}
         >
@@ -95,7 +104,7 @@ export default function Home() {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2,
+                gap: 2.5,
                 width: "100%",
               }}
             >
@@ -130,16 +139,21 @@ export default function Home() {
                   fontWeight: 700,
                   letterSpacing: 1,
                   borderRadius: 2,
+                  background:
+                    "linear-gradient(90deg, #1976d2 60%, #64b5f6 100%)",
                   boxShadow: "0 2px 8px rgba(25, 118, 210, 0.15)",
                   transition: "background 0.3s",
-                  "&:hover": { background: "#1565c0" },
+                  "&:hover": {
+                    background:
+                      "linear-gradient(90deg, #1565c0 60%, #42a5f5 100%)",
+                  },
                 }}
               >
                 INICIAR SESIÓN
               </Button>
             </Box>
           </form>
-          <Box sx={{ mt: 3, textAlign: "center" }}>
+          <Box sx={{ mt: 4, textAlign: "center" }}>
             <Typography fontSize={15}>
               ¿No tienes una cuenta?{" "}
               <Link
@@ -147,6 +161,7 @@ export default function Home() {
                 underline="hover"
                 color="primary"
                 component={NextLink}
+                fontWeight={600}
               >
                 Regístrate
               </Link>
