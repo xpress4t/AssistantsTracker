@@ -16,8 +16,11 @@ const AttendanceScreen = ({
   history,
   modalOpen,
   onClear,
-  onSearch,
+  onHistoryUpdate,
+  onModalClose,
+  onModalCreate,
   onModalOpen,
+  onSearch,
   setCourse,
   setDateFrom,
   setDateTo,
@@ -27,117 +30,122 @@ const AttendanceScreen = ({
   subjects = [],
   student,
   students = [],
-  onModalClose,
-  onModalCreate,
 }) => (
   <>
     <AppBar title="Attendance" />
 
-    <Toolbar>
-      {courses.length > 1 && (
-        <Select
-          id="course"
-          name="course"
-          label="Course"
-          options={courses}
-          value={course}
-          width="200px"
-          onClear={() => {
-            setCourse("");
-          }}
-          onChange={(e) => {
-            console.log("Setting course to :", e.target.value);
+    <Toolbar
+      sx={{
+        alignItems: "flex-start",
+        display: "flex",
+        mt: 1,
+        px: { xs: 0, sm: 0, md: 1, lg: 1, xl: 1 },
+      }}
+    >
+      <Box sx={{ flex: 1, height: "100%" }}>
+        {courses.length > 1 && (
+          <Select
+            id="course"
+            name="course"
+            label="Course"
+            options={courses}
+            value={course}
+            width="200px"
+            onClear={() => {
+              setCourse("");
+            }}
+            onChange={(e) => {
+              setCourse(e.target.value);
+            }}
+            getOptionLabel={(opt) => opt.name}
+            size="small"
+            sx={{ m: 1 }}
+          />
+        )}
 
-            setCourse(e.target.value);
+        {subjects.length > 1 && (
+          <Select
+            id="subject"
+            name="subject"
+            label="Subject"
+            options={subjects}
+            value={subject}
+            width="200px"
+            onClear={() => {
+              setSubject("");
+            }}
+            onChange={(e) => setSubject(e.target.value)}
+            getOptionLabel={(opt) => opt.name}
+            size="small"
+            sx={{ m: 1 }}
+          />
+        )}
+
+        {students.length > 1 && (
+          <Select
+            id="students"
+            name="students"
+            label="Student"
+            options={students}
+            value={student}
+            width="200px"
+            onClear={() => {
+              setStudent("");
+            }}
+            onChange={(e) => setStudent(e.target.value)}
+            getOptionLabel={(opt) => `${opt.name} ${opt.lastname}`}
+            size="small"
+            sx={{ m: 1 }}
+          />
+        )}
+
+        <Datepicker
+          defaultValue={null}
+          label="Desde"
+          value={dateFrom}
+          onClear={() => {
+            setDateFrom("");
           }}
-          getOptionLabel={(opt) => opt.name}
+          onChange={(df) => {
+            setDateFrom(df);
+          }}
+          clearable={true}
           size="small"
           sx={{ m: 1 }}
         />
-      )}
 
-      {subjects.length > 1 && (
-        <Select
-          id="subject"
-          name="subject"
-          label="Subject"
-          options={subjects}
-          value={subject}
-          width="200px"
+        <Datepicker
+          label="Hasta"
+          value={dateTo}
           onClear={() => {
-            setSubject("");
+            setDateTo("");
           }}
-          onChange={(e) => setSubject(e.target.value)}
-          getOptionLabel={(opt) => opt.name}
+          onChange={(dt) => setDateTo(dt)}
+          clearable={true}
           size="small"
           sx={{ m: 1 }}
         />
-      )}
 
-      {students.length > 1 && (
-        <Select
-          id="students"
-          name="students"
-          label="Student"
-          options={students}
-          value={student}
-          width="200px"
-          onClear={() => {
-            setStudent("");
-          }}
-          onChange={(e) => setStudent(e.target.value)}
-          getOptionLabel={(opt) => `${opt.name} ${opt.lastname}`}
-          size="small"
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onSearch}
           sx={{ m: 1 }}
-        />
-      )}
+          startIcon={<SearchIcon />}
+        >
+          Buscar
+        </Button>
 
-      <Datepicker
-        defaultValue={null}
-        label="Desde"
-        value={dateFrom}
-        onClear={() => {
-          setDateFrom("");
-        }}
-        onChange={(df) => {
-          setDateFrom(df);
-        }}
-        clearable={true}
-        size="small"
-        sx={{ m: 1 }}
-      />
-
-      <Datepicker
-        label="Hasta"
-        value={dateTo}
-        onClear={() => {
-          setDateTo("");
-        }}
-        onChange={(dt) => setDateTo(dt)}
-        clearable={true}
-        size="small"
-        sx={{ m: 1 }}
-      />
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onSearch}
-        sx={{ m: 1 }}
-        startIcon={<SearchIcon />}
-      >
-        Buscar
-      </Button>
-
-      <Button
-        variant="contained"
-        color="error"
-        onClick={onClear}
-        sx={{ m: 1 }}
-        startIcon={<DeleteForeverIcon />}
-      >
-        Limpiar
-      </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={onClear}
+          sx={{ m: 1 }}
+          startIcon={<DeleteForeverIcon />}
+        >
+          Limpiar
+        </Button>
+      </Box>
 
       <Box sx={{ height: "100%" }}>
         <Button
@@ -160,6 +168,7 @@ const AttendanceScreen = ({
       students={students || [user]}
       subjects={subjects}
       courses={courses}
+      onClick={onHistoryUpdate}
     />
 
     <AttendanceModal
