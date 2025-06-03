@@ -23,9 +23,9 @@ const AttendanceModal = ({
   const course = courses.find((c) => c.id === courseId);
   const subject = subjects.find((s) => s.id === subjectId);
 
-  const courseSubjects = course?.subjects.map((sub) =>
-    subjects.find((s) => s.id === sub.subjectId)
-  );
+  const courseSubjects = (course?.subjects ?? [])
+    .map((sub) => subjects.find((s) => s.id === sub.subjectId))
+    .filter((s) => !!s);
 
   let history = [];
   if (course && subject) {
