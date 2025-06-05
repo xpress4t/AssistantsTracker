@@ -91,7 +91,7 @@ const AttendancePage = () => {
     setLoading(true);
     const attendance = { attendanceId, value };
     const filters = { course, student, subject, dateFrom, dateTo };
-    const res = await api.attendance.putAttendance(attendance, filters);
+    const res = await api.attendance.editAttendance(attendance, filters);
     setHistory(res);
     setLoading(false);
   };
@@ -110,6 +110,7 @@ const AttendancePage = () => {
 
   return (
     <AttendanceScreen
+      canCreate={user?.roleId === "2"}
       course={course}
       courses={courses}
       dateFrom={dateFrom}

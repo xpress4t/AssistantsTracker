@@ -42,7 +42,9 @@ export const useAuth = () => {
     }
 
     if (status === "success") {
-      if (!!user && isPublicRoute(pathname)) {
+      if (!!user && !user.roleId) {
+        push("/register/success");
+      } else if (!!user && isPublicRoute(pathname)) {
         push("/dashboard");
       } else if (!user && !isPublicRoute(pathname)) {
         push("/");

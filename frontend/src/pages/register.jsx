@@ -73,7 +73,6 @@ export default function Home() {
         password,
         photo: photoUrl,
       });
-      // setUser(user);
       router.push("/register/success");
     } catch (e) {
       if (e?.field === "email") {
@@ -125,10 +124,7 @@ export default function Home() {
             boxSizing: "border-box",
             position: "relative",
           }}
-        >
-          
-          
-        </Box>
+        ></Box>
 
         <Box
           sx={{
@@ -240,8 +236,7 @@ export default function Home() {
                 fontWeight: 700,
                 letterSpacing: 1,
                 borderRadius: 2,
-                background:
-                  "linear-gradient(90deg, #1976d2 60%, #64b5f6 100%)",
+                background: "linear-gradient(90deg, #1976d2 60%, #64b5f6 100%)",
                 boxShadow: "0 2px 8px rgba(25, 118, 210, 0.15)",
                 transition: "background 0.3s",
                 "&:hover": {

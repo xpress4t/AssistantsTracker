@@ -11,11 +11,11 @@ import { formatDate } from "@/utils/dates";
 import AttendanceValue from "./AttendanceValue";
 
 const AttendanceTable = ({
+  courses = [],
   history = [],
   onClick,
   subjects = [],
   students = [],
-  courses = [],
 }) => (
   <TableContainer>
     <Table sx={{ minWidth: 650 }} aria-label="attendance table">
@@ -34,8 +34,9 @@ const AttendanceTable = ({
           const student = students.find((s) => s.id === row.userId);
           const subject = subjects.find((s) => s.id === row.subjectId);
           const course = courses.find((s) => s.id === row.classroomId);
+
           const onRowClick = (value) => {
-            onClick(row.attendanceId, value);
+            onClick(row, value);
           };
 
           const key = row.attendanceId ?? row.userId;
