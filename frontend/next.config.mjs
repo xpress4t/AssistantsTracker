@@ -5,8 +5,12 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
+        source: "/api/users/uploadPhoto.php",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/users/uploadPhoto.php`,
+      },
+      {
         source: "/api/:path*",
-        destination: "http://localhost/backend/:path*" + "/index.php",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*/index.php`,
       },
     ];
   },
