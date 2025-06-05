@@ -39,6 +39,7 @@ const AttendanceModal = ({
 
       return {
         attendanceId: undefined,
+        classroomId: course.id,
         userId: studentId,
         subjectId: subject.id,
         date: new Date(date).toDateString(),
@@ -55,7 +56,7 @@ const AttendanceModal = ({
 
   const onClick = async (row, value) => {
     const attendance = { ...row, value };
-    const history = await api.attendance.postAttendance(attendance, {});
+    const history = await api.attendance.createAttendance(attendance, {});
     onCreate(history);
   };
 
@@ -77,31 +78,53 @@ const AttendanceModal = ({
         "& > .MuiDialog-container > .MuiPaper-root": {
           display: "flex",
           height: "100%",
+          flexDirection: "column",
+          background:
+            "linear-gradient(135deg, #e3f2fd 0%, #fff 60%, #f3e5f5 100%)",
+          borderRadius: 4,
+          boxShadow: "0 12px 40px 0 rgba(25, 118, 210, 0.18)",
+          overflow: "hidden",
         },
       }}
     >
       <Box
         sx={{
+          alignItems: "center",
+          bgcolor: "#f5faff",
+          borderBottom: "1px solid #e0e0e0",
           display: "flex",
-          m: 1,
-          flexDirection: "row",
+          justifyContent: "space-between",
+          px: 3,
+          py: 2,
         }}
       >
         <Typography
           id="modal-modal-title"
           variant="h6"
           component="h2"
-          sx={{ flex: 1 }}
+          sx={{ fontWeight: 700, color: "#1976d2" }}
         >
           Crear Asistencia
         </Typography>
 
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} sx={{ color: "#1976d2" }}>
           <CancelRoundedIcon />
         </IconButton>
       </Box>
 
-      <div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 3,
+          px: { xs: 2, md: 4 },
+          py: 3,
+          bgcolor: "#fff",
+          borderRadius: 3,
+          boxShadow: "0 2px 8px rgba(25, 118, 210, 0.05)",
+          mb: 2,
+        }}
+      >
         <Select
           id="course"
           name="course"
@@ -115,7 +138,7 @@ const AttendanceModal = ({
           onChange={onCourseSelect}
           getOptionLabel={(opt) => opt.name}
           size="small"
-          sx={{ m: 1 }}
+          sx={{ minWidth: 180 }}
         />
 
         <Select
@@ -132,7 +155,7 @@ const AttendanceModal = ({
           onChange={(e) => setSubjectId(e.target.value)}
           getOptionLabel={(opt) => opt.name}
           size="small"
-          sx={{ m: 1 }}
+          sx={{ minWidth: 180 }}
         />
 
         <Datepicker
@@ -147,18 +170,28 @@ const AttendanceModal = ({
           }}
           clearable={true}
           size="small"
-          sx={{ m: 1 }}
+          sx={{ minWidth: 180 }}
         />
-      </div>
-
-      <div style={{ flex: 1 }}>
+      </Box>
+      <Box
+        sx={{
+          flex: 1,
+          px: { xs: 1, md: 4 },
+          pb: 4,
+          overflow: "auto",
+          bgcolor: "#f8fafc",
+          borderRadius: 3,
+          boxShadow: "0 1px 4px rgba(25, 118, 210, 0.04)",
+        }}
+      >
         <AttendanceTable
+          courses={courses}
           history={history}
+          onClick={onClick}
           students={students}
           subjects={subjects}
-          onClick={onClick}
         />
-      </div>
+      </Box>
     </Dialog>
   );
 };
