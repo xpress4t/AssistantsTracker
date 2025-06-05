@@ -9,7 +9,6 @@ function checkValue($value)
   return false;
 }
 
-
 function getAttendance($course, $student, $subject, $dateFrom, $dateTo)
 {
   if (!isset($_SESSION['user'])) {
@@ -124,10 +123,11 @@ function createAttendance($attendance, $filters)
     ]));
   }
 
+  $rawDate = mysqli_real_escape_string($connectionBBDD, $attendance['date']);
+  $date = isset($rawDate) && !empty($rawDate) ? convertToMySQLTimestamp($rawDate) : date('Y-m-d');
   $userId = mysqli_real_escape_string($connectionBBDD, $attendance['userId']);
   $subjectId = mysqli_real_escape_string($connectionBBDD, $attendance['subjectId']);
   $value = $attendance['value'] ? 1 : 0;
-  $date = date('Y-m-d');
   $query1 = "SELECT attendanceId FROM attendance WHERE userId='$userId' AND subjectId='$subjectId' AND date='$date'";
   $checkResult = mysqli_query($connectionBBDD, $query1);
 

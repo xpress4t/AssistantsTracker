@@ -32,7 +32,7 @@ const Dashboard = () => {
         flexDirection: "column",
       }}
     >
-      <AppBar title={"Bienvenido, " + user.name} />
+      <AppBar title={"Hola, " + user.name} />
       <Box
         sx={{
           flex: 1,
