@@ -20,7 +20,7 @@ export const getAttendance = async (filters) => {
   return data;
 };
 
-export const postAttendance = async (attendance, filters) => {
+export const createAttendance = async (attendance, filters) => {
   const url = `${API_URL}${attendances}`;
   const res = await fetch(url, {
     method: "POST",
@@ -38,7 +38,7 @@ export const postAttendance = async (attendance, filters) => {
   return data;
 };
 
-export const putAttendance = async (attendance, filters) => {
+export const editAttendance = async (attendance, filters) => {
   const url = `${API_URL}${attendances}`;
   const res = await fetch(url, {
     method: "PUT",
