@@ -23,7 +23,7 @@ function getUserByEmail($email)
   $user = $resultado->fetch_assoc();
 
   if (isset($user['photo']) && !empty($user['photo'])) {
-    $user['photo'] = "http://localhost/backend/assets/avatar/" . $user['photo'];
+    $user['photo'] = $_ENV["API_URL"] . "/assets/avatar/" . $user['photo'];
   }
 
   return $user;
@@ -68,7 +68,7 @@ function getUsers($roleIdFilter)
   $users = array();
   while ($row = mysqli_fetch_assoc($resultado)) {
     if (isset($row['photo']) && !empty($row['photo'])) {
-      $row['photo'] = "http://localhost/backend/assets/avatar/" . $row['photo'];
+      $row['photo'] = $_ENV["API_URL"] . "/assets/avatar/" . $row['photo'];
     }
 
     if ($roleIdFilter === '3') {

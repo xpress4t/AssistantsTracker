@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 
     if (move_uploaded_file($file["tmp_name"], $targetFile)) {
         echo json_encode([
-            "url" => "/backend/assets/avatar/" . $fileName
+            "url" => $fileName
         ]);
     } else {
         http_response_code(500);
