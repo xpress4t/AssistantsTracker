@@ -32,15 +32,8 @@ export default function Home() {
   const router = useRouter();
 
   const uploadPhoto = async (file) => {
-    const formData = new FormData();
-    formData.append("photo", file);
-    const res = await fetch("http://localhost/backend/users/uploadPhoto.php", {
-      method: "POST",
-      body: formData,
-    });
-    if (!res.ok) throw new Error("Error al subir la foto");
-    const data = await res.json();
-    return data.url;
+    const url = await api.auth.uploadPhoto(file);
+    return url;
   };
 
   const handlePhotoChange = (event) => {
@@ -66,7 +59,7 @@ export default function Home() {
       if (photo) {
         photoUrl = await uploadPhoto(photo);
       }
-      const user = await api.auth.register({
+      await api.auth.register({
         name,
         lastname,
         email,

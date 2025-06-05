@@ -49,6 +49,23 @@ export const register = async (user) => {
   return data;
 };
 
+export const uploadPhoto = async (file) => {
+  const url = `${API_URL}users/uploadPhoto.php`;
+
+  const formData = new FormData();
+  formData.append("photo", file);
+  const res = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error("Error al subir la foto");
+  }
+  const data = await res.json();
+  return data.url;
+};
+
 export const logout = async () => {
   const url = `${API_URL}${auth}`;
   const res = await fetch(url, {
