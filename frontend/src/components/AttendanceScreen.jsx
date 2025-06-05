@@ -9,6 +9,7 @@ import { CalendarIcon } from "@mui/x-date-pickers";
 import AttendanceModal from "./AttendanceModal";
 
 const AttendanceScreen = ({
+  canCreate,
   course,
   courses = [],
   dateFrom,
@@ -147,20 +148,22 @@ const AttendanceScreen = ({
         </Button>
       </Box>
 
-      <Box sx={{ height: "100%" }}>
-        <Button
-          startIcon={<CalendarIcon />}
-          variant="contained"
-          sx={{ m: 1 }}
-          onClick={() => {
-            onClear();
-            onSearch(true);
-            onModalOpen();
-          }}
-        >
-          Create
-        </Button>
-      </Box>
+      {canCreate && (
+        <Box sx={{ height: "100%" }}>
+          <Button
+            startIcon={<CalendarIcon />}
+            variant="contained"
+            sx={{ m: 1 }}
+            onClick={() => {
+              onClear();
+              onSearch(true);
+              onModalOpen();
+            }}
+          >
+            Create
+          </Button>
+        </Box>
+      )}
     </Toolbar>
 
     <AttendanceTable
