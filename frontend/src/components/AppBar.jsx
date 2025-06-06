@@ -121,23 +121,45 @@ const AppBar = ({ title }) => {
                   </Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center" width="100%">
+                  <LogoutIcon sx={{ color: "black" }} />
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
-          <Typography
-            variant="body1"
-            color="inherit"
+          <Box
             sx={{
-              fontSize: "20px",
-              fontFamily: "Arial",
               display: { xs: "flex", md: "none" },
-              flex: 1,
-              justifyContent: "center",
-              maxWidth: `calc(100% - ${48 * 2}px)`,
+              flexDirection: "row",
+              alignItems: "center",
+              width: "100%",
             }}
           >
-            {title}
-          </Typography>
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="body1"
+                color="inherit"
+                sx={{
+                  fontSize: "20px",
+                  fontFamily: "Arial",
+                  textAlign: "center",
+                }}
+              >
+                {title}
+              </Typography>
+            </Box>
+            <Avatar alt={user?.name} src={user?.photo} sx={{ marginRight: 0 }}>
+              {user?.name?.[0]}
+            </Avatar>
+          </Box>
 
           <Box
             sx={{
@@ -161,7 +183,7 @@ const AppBar = ({ title }) => {
                   </Button>
                 );
               }
-
+              
               return (
                 <IconButton {...props} key={page.href} sx={{ borderRadius: 1 }}>
                   {page.icon}
