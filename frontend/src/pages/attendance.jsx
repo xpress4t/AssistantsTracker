@@ -87,9 +87,9 @@ const AttendancePage = () => {
     setHistory([]);
   };
 
-  const onHistoryUpdate = async (attendanceId, value) => {
+  const onHistoryUpdate = async (attendanceRecord, value) => {
     setLoading(true);
-    const attendance = { attendanceId, value };
+    const attendance = { attendanceId: attendanceRecord.attendanceId, value: value };
     const filters = { course, student, subject, dateFrom, dateTo };
     const res = await api.attendance.editAttendance(attendance, filters);
     setHistory(res);
